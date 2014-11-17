@@ -1,0 +1,194 @@
+#include <fstream>
+#include <cstdio>
+#include <cstdlib>
+#include <string>
+#include <vector>
+
+#include "loadObject.h"
+
+using namespace std;
+
+int obj_count = 0;
+g_object objects[MAX_OBJECTS];
+
+inline float strtofloat(char *s)
+{
+	int i = 0;
+	float res = 0;
+	int flag = 1;
+	if (s[0] == '-')
+	{
+		i++;
+		flag = -1;
+	}
+	while (s[i] != 0 && s[i] != '.')
+		res = res * 10 + (int)(s[i++] - '0');
+	i++;
+	int buf = 10;
+	while (s[i] != 0)
+	{
+		res += (float)(s[i] - '0') / (buf);
+		buf *= 10;
+		i++;
+	}
+	return res * flag;
+}
+
+void save_bin_aux_f(vector<GLfloat> &v, FILE *F)
+{
+	int buf = v.size();
+	fwrite(&buf, sizeof(int), 1, F);
+	fwrite(&v[0], sizeof(int), buf, F);
+}
+
+void save_bin_aux_u(vector<GLuint> &v, FILE *F)
+{
+	int buf = v.size();
+	fwrite(&buf, sizeof(int), 1, F);
+	fwrite(&v[0], sizeof(int), buf, F);
+}
+
+void save_bin(g_object *obj, char *file)
+{
+	char *File = new char[100];
+	File = "";
+	strcat(File, file);
+	strcat(File, "bin");
+	FILE *F = fopen(file, "wb+");
+
+	save_bin_aux_f(obj->verts, F);
+	save_bin_aux_f(obj->texcoords, F);
+	save_bin_aux_f(obj->normals, F);
+	save_bin_aux_u(obj->indicies, F);
+	save_bin_aux_f(obj->N_verts, F);
+	save_bin_aux_u(obj->N_indicies, F);
+
+	delete[] File;
+}
+
+void load_bin(g_object *obj, char *file)
+{
+
+}
+
+void load_object(g_object *obj, char *file)
+{
+	//ifstream ifs(file, ifstream::in);
+	//freopen(file, "r", stdin);
+
+	FILE *F = fopen(file, "rt");
+
+	vector<GLfloat> vt;
+	vector<GLfloat> uv;
+	vector<GLfloat> ns;
+	vector<GLuint>  ind;
+
+	char *s = new char[10000];
+	while (!feof(F))
+	{
+		//ifs >> s;
+		fscanf(F, "%s", s);
+		if (!strcmp(s, "v"))
+		{
+			GLfloat buf;
+			double dbuf;
+			for (int i = 0; i < 3; i++)
+			{
+				//ifs >> buf;
+				fscanf(F, "%s", s);
+				vt.push_back(strtofloat(s));
+			}
+		}
+		else if (!strcmp(s, "vt"))
+		{
+			GLfloat buf;
+			for (int i = 0; i < 2; i++)
+			{
+				//ifs >> buf;
+				fscanf(F, "%s", s);
+				uv.push_back(strtofloat(s));
+			}
+		}
+		else if (!strcmp(s, "vn"))
+		{
+			GLfloat buf;
+			for (int i = 0; i < 3; i++)
+			{
+				//ifs >> buf;
+				fscanf(F, "%s", s);
+				ns.push_back(strtofloat(s));
+			}
+		}
+		else if (!strcmp(s, "f"))
+		{
+			//getline(ifs, s);
+			GLuint buf[9];
+
+			fscanf(F, "%u/%u/%u %u/%u/%u %u/%u/%u ", 
+				&buf[0], &buf[1], &buf[2], 
+				&buf[3], &buf[4], &buf[5], 
+				&buf[6], &buf[7], &buf[8]);
+			ind.push_back(buf[0] - 1);
+			ind.push_back(buf[1] - 1);
+			ind.push_back(buf[2] - 1);
+			ind.push_back(buf[3] - 1);
+			ind.push_back(buf[4] - 1);
+			ind.push_back(buf[5] - 1);
+			ind.push_back(buf[6] - 1);
+			ind.push_back(buf[7] - 1);
+			ind.push_back(buf[8] - 1);
+		}
+	}
+	size_t i = 0;
+	while (i < ind.size())
+	{
+		obj->indicies.push_back(i / 3);
+
+		obj->verts.push_back(vt[ind[i] * 3	  ]);
+		obj->verts.push_back(vt[ind[i] * 3 + 1]);
+		obj->verts.push_back(vt[ind[i] * 3 + 2]);
+		i++;
+
+		obj->texcoords.push_back(uv[ind[i] * 2    ]);
+		obj->texcoords.push_back(uv[ind[i] * 2 + 1]);
+		i++;
+
+		obj->normals.push_back(ns[ind[i] * 3	]);
+		obj->normals.push_back(ns[ind[i] * 3 + 1]);
+		obj->normals.push_back(ns[ind[i] * 3 + 2]);
+		i++;
+	}
+
+	obj->vert_num = obj->verts.size() / 3;
+	obj->ind_num = obj->indicies.size();
+	obj->file = file;
+	
+	for (i = 0; i < obj->ind_num; i++)
+	{
+		obj->N_verts.push_back(obj->verts[i * 3]);
+		obj->N_verts.push_back(obj->verts[i * 3 + 1]);
+		obj->N_verts.push_back(obj->verts[i * 3 + 2]);
+
+		obj->N_verts.push_back(obj->verts[i * 3]     + obj->normals[i * 3]     / 10);
+		obj->N_verts.push_back(obj->verts[i * 3 + 1] + obj->normals[i * 3 + 1] / 10);
+		obj->N_verts.push_back(obj->verts[i * 3 + 2] + obj->normals[i * 3 + 2] / 10);
+
+		obj->N_indicies.push_back(i * 2);
+		obj->N_indicies.push_back(i * 2 + 1);
+	}
+
+	delete[] s;
+	fclose(F);
+
+	save_bin(obj, file);
+}
+
+int reg_object(char *file)
+{
+	for (int i = 0; i < obj_count; i++)
+		if (objects[i].file == file)
+			return i;
+	load_object(&objects[obj_count], file);
+	obj_count++;
+	return obj_count - 1;
+}

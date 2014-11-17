@@ -1,0 +1,179 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Header Files\CG">
+      <UniqueIdentifier>{76615189-8f11-4c98-9b3f-10cb0750ec34}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\CG">
+      <UniqueIdentifier>{03e5856a-5bdb-4195-9f25-9bc5dd9d4418}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shaders">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="error_log.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="files.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="glerrors.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="light.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="loadObject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mesh.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="physics.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="program.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="textures.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="camera.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CG_consts.h">
+      <Filter>Header Files\CG</Filter>
+    </ClInclude>
+    <ClInclude Include="CG_data.h">
+      <Filter>Header Files\CG</Filter>
+    </ClInclude>
+    <ClInclude Include="CG_error_stream.h">
+      <Filter>Header Files\CG</Filter>
+    </ClInclude>
+    <ClInclude Include="CG_mat.h">
+      <Filter>Header Files\CG</Filter>
+    </ClInclude>
+    <ClInclude Include="CG_mat_data.h">
+      <Filter>Header Files\CG</Filter>
+    </ClInclude>
+    <ClInclude Include="CG_vec.h">
+      <Filter>Header Files\CG</Filter>
+    </ClInclude>
+    <ClInclude Include="CG_vec_data.h">
+      <Filter>Header Files\CG</Filter>
+    </ClInclude>
+    <ClInclude Include="winfuncs.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="CG_data.c">
+      <Filter>Resource Files\CG</Filter>
+    </ClCompile>
+    <ClCompile Include="CG_error_stream.c">
+      <Filter>Resource Files\CG</Filter>
+    </ClCompile>
+    <ClCompile Include="CG_mat.c">
+      <Filter>Resource Files\CG</Filter>
+    </ClCompile>
+    <ClCompile Include="CG_mat_data.c">
+      <Filter>Resource Files\CG</Filter>
+    </ClCompile>
+    <ClCompile Include="CG_vec.c">
+      <Filter>Resource Files\CG</Filter>
+    </ClCompile>
+    <ClCompile Include="CG_vec_data.c">
+      <Filter>Resource Files\CG</Filter>
+    </ClCompile>
+    <ClCompile Include="textures.cpp">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
+    <ClCompile Include="camera.cpp">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
+    <ClCompile Include="error_log.cpp">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
+    <ClCompile Include="files.cpp">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
+    <ClCompile Include="glerrors.cpp">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
+    <ClCompile Include="light.cpp">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
+    <ClCompile Include="loadObject.cpp">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
+    <ClCompile Include="mesh.cpp">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
+    <ClCompile Include="physics.cpp">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
+    <ClCompile Include="program.cpp">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
+    <ClCompile Include="winfuncs.cpp">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="shaders\fs1.sh">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="shaders\fs2.sh">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="shaders\fs3.sh">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="shaders\fs4.sh">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="shaders\fs5.sh">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="shaders\shad_f.sh">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="shaders\shad_v.sh">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="shaders\vs1.sh">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="shaders\vs2.sh">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="shaders\vs3.sh">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="shaders\vs4.sh">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="shaders\vs5.sh">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="shaders\quad_f.sh">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="shaders\quad_v.sh">
+      <Filter>Shaders</Filter>
+    </None>
+  </ItemGroup>
+</Project>
