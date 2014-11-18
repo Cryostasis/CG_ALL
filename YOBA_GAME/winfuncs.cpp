@@ -6,9 +6,11 @@
 #include <GL/glew.h>
 #include <GL/freeglut.h>
 
+#define MAX_SCREENS 100
+
 HWND hwnd;
 
-void snapshot(int windowWidth, int windowHeight, char* filename)
+void snapshot(int windowWidth, int windowHeight)
 {
 	char* bmpBuffer = (char*)malloc(windowWidth*windowHeight * 3);
 	if (!bmpBuffer)
@@ -18,7 +20,20 @@ void snapshot(int windowWidth, int windowHeight, char* filename)
 	//glBindTexture(GL_TEXTURE_2D, 22);
 	//glGetTexImage(GL_TEXTURE_2D, 0, GL_BGR, GL_UNSIGNED_BYTE, bmpBuffer);
 
-	FILE *filePtr = fopen(filename, "wb");
+	char *filename = new char[100];
+	char *buf = new char[100];
+	filename[0] = 0;
+	int i;
+	for (i = 0; i < MAX_SCREENS; i++)
+	{
+		buf[0] = 0;
+		sprintf(buf, "%s%d%s", "screenshots/screen", i, ".bmp");
+		FILE *F = fopen(buf, "r");
+		if (!F)
+			break;
+		fclose(F);
+	}
+	FILE *filePtr = fopen(buf, "wb");
 	if (!filePtr)
 		return;
 

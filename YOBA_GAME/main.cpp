@@ -431,7 +431,7 @@ void on_press_key(unsigned char key, int x, int y)
 	case 'd': case 'D':		{ flag_right = 1; break; }
 	case 'q': case 'Q':		{ flag_roll_l = 1; break; }
 	case 'e': case 'E':		{ flag_roll_r = 1; break; }
-	case 'g': case 'G':		{ snapshot(window[0], window[1], "test.bmp"); break; }
+	case 'g': case 'G':		{ snapshot(window[0], window[1]); break; }
 	case 45:				{ diff_angle /= 2; break; }
 	case 43:				{ diff_angle *= 2; break; }
 	case 42:				{ diff_angle *= -1; break; }
