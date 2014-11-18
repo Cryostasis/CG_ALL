@@ -9,12 +9,6 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Header Files\CG">
-      <UniqueIdentifier>{76615189-8f11-4c98-9b3f-10cb0750ec34}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource Files\CG">
-      <UniqueIdentifier>{03e5856a-5bdb-4195-9f25-9bc5dd9d4418}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Shaders">
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
       <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
@@ -51,50 +45,11 @@
     <ClInclude Include="camera.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="CG_consts.h">
-      <Filter>Header Files\CG</Filter>
-    </ClInclude>
-    <ClInclude Include="CG_data.h">
-      <Filter>Header Files\CG</Filter>
-    </ClInclude>
-    <ClInclude Include="CG_error_stream.h">
-      <Filter>Header Files\CG</Filter>
-    </ClInclude>
-    <ClInclude Include="CG_mat.h">
-      <Filter>Header Files\CG</Filter>
-    </ClInclude>
-    <ClInclude Include="CG_mat_data.h">
-      <Filter>Header Files\CG</Filter>
-    </ClInclude>
-    <ClInclude Include="CG_vec.h">
-      <Filter>Header Files\CG</Filter>
-    </ClInclude>
-    <ClInclude Include="CG_vec_data.h">
-      <Filter>Header Files\CG</Filter>
-    </ClInclude>
     <ClInclude Include="winfuncs.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="CG_data.c">
-      <Filter>Resource Files\CG</Filter>
-    </ClCompile>
-    <ClCompile Include="CG_error_stream.c">
-      <Filter>Resource Files\CG</Filter>
-    </ClCompile>
-    <ClCompile Include="CG_mat.c">
-      <Filter>Resource Files\CG</Filter>
-    </ClCompile>
-    <ClCompile Include="CG_mat_data.c">
-      <Filter>Resource Files\CG</Filter>
-    </ClCompile>
-    <ClCompile Include="CG_vec.c">
-      <Filter>Resource Files\CG</Filter>
-    </ClCompile>
-    <ClCompile Include="CG_vec_data.c">
-      <Filter>Resource Files\CG</Filter>
-    </ClCompile>
     <ClCompile Include="textures.cpp">
       <Filter>Resource Files</Filter>
     </ClCompile>

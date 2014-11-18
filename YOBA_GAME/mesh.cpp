@@ -176,6 +176,18 @@ void mesh_t::move_to(vec3 v)
 	position = v;
 }
 
+void mesh_t::look_at(vec3 pos, vec3 target, vec3 up)
+{
+	position = pos;
+	rotate_strict(GLToEulerRad(transpose(GLLookAt(pos, target, up))));
+}
+
+void mesh_t::look_at_dir(vec3 pos, vec3 dir, vec3 up)
+{
+	position = pos;
+	rotation = GLLookAt(pos, pos + dir, up);
+}
+
 void mesh_create_cube(mesh_t &obj, vec3 position, GLfloat scale, int material, GLuint tex)
 {
 	static bool flag;

@@ -303,9 +303,9 @@ void bullet_run()
 	for (int i = 0; i < MAX_BULLETS; i++)
 		if (!bullets[i].visible)
 		{
-			bullets[i].move_to(vec3((GLTranslation(mainCamera.position) * transpose(GLrotate(mainCamera.rotation))) * vec4(0.0, 0.0, -0.2, 1.0)));
+			bullets[i].look_at(
+				(GLTranslation(mainCamera.position) * transpose(GLrotate(mainCamera.rotation))) * vec4(0.0, 0.0, -0.2, 1.0), mainCamera.position, vec3_y);
 			bullets[i].speed = vec3(transpose(GLrotate(mainCamera.rotation)) * vec4(0.0, 0.0, -0.1, 1.0));
-			bullets[i].rotate_strict(-mainCamera.rotation.v[0], -mainCamera.rotation.v[1] + M_PI + 0.4, -mainCamera.rotation.v[2]);
 			bullets[i].physics_reset();
 			return;
 		}

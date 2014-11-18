@@ -1,7 +1,6 @@
 #include "math/math3d.h"
 #include "math/mathgl.h"
 #include "camera.h"
-#include "CG_mat.h"
 #define _USE_MATH_DEFINES
 #include <cmath>
 

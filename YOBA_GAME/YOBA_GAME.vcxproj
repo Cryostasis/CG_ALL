@@ -12,13 +12,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="camera.h" />
-    <ClInclude Include="CG_consts.h" />
-    <ClInclude Include="CG_data.h" />
-    <ClInclude Include="CG_error_stream.h" />
-    <ClInclude Include="CG_mat.h" />
-    <ClInclude Include="CG_mat_data.h" />
-    <ClInclude Include="CG_vec.h" />
-    <ClInclude Include="CG_vec_data.h" />
     <ClInclude Include="error_log.h" />
     <ClInclude Include="files.h" />
     <ClInclude Include="glerrors.h" />
@@ -32,24 +25,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="camera.cpp" />
-    <ClCompile Include="CG_data.c">
-      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsCpp</CompileAs>
-    </ClCompile>
-    <ClCompile Include="CG_error_stream.c">
-      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsCpp</CompileAs>
-    </ClCompile>
-    <ClCompile Include="CG_mat.c">
-      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsCpp</CompileAs>
-    </ClCompile>
-    <ClCompile Include="CG_mat_data.c">
-      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsCpp</CompileAs>
-    </ClCompile>
-    <ClCompile Include="CG_vec.c">
-      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsCpp</CompileAs>
-    </ClCompile>
-    <ClCompile Include="CG_vec_data.c">
-      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsCpp</CompileAs>
-    </ClCompile>
     <ClCompile Include="error_log.cpp" />
     <ClCompile Include="files.cpp" />
     <ClCompile Include="glerrors.cpp" />

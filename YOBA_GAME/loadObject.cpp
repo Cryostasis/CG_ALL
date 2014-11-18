@@ -38,37 +38,58 @@ void save_bin_aux_f(vector<GLfloat> &v, FILE *F)
 {
 	int buf = v.size();
 	fwrite(&buf, sizeof(int), 1, F);
-	fwrite(&v[0], sizeof(int), buf, F);
+	fwrite(&v[0], sizeof(GLfloat), buf, F);
 }
 
 void save_bin_aux_u(vector<GLuint> &v, FILE *F)
 {
 	int buf = v.size();
 	fwrite(&buf, sizeof(int), 1, F);
-	fwrite(&v[0], sizeof(int), buf, F);
+	fwrite(&v[0], sizeof(GLuint), buf, F);
 }
 
-void save_bin(g_object *obj, char *file)
+void save_bin(g_object *obj, FILE *F)
 {
-	char *File = new char[100];
-	File = "";
-	strcat(File, file);
-	strcat(File, "bin");
-	FILE *F = fopen(file, "wb+");
-
 	save_bin_aux_f(obj->verts, F);
 	save_bin_aux_f(obj->texcoords, F);
 	save_bin_aux_f(obj->normals, F);
 	save_bin_aux_u(obj->indicies, F);
 	save_bin_aux_f(obj->N_verts, F);
 	save_bin_aux_u(obj->N_indicies, F);
-
-	delete[] File;
 }
 
-void load_bin(g_object *obj, char *file)
+void read_bin_aux_f(vector<GLfloat> &v, FILE *F)
 {
+	int buf;
+	fread(&buf, sizeof(int), 1, F);
+	v.resize(buf);
+	if (buf == 5760)
+	{
+		int i = 5;
+		i++;
+	}
+	fread(&v[0], sizeof(GLfloat), buf, F);
+}
 
+void read_bin_aux_u(vector<GLuint> &v, FILE *F)
+{
+	int buf;
+	fread(&buf, sizeof(int), 1, F);
+	v.resize(buf);
+	fread(&v[0], sizeof(GLuint), buf, F);
+}
+
+void load_bin(g_object *obj, FILE *F)
+{
+	read_bin_aux_f(obj->verts, F);
+	read_bin_aux_f(obj->texcoords, F);
+	read_bin_aux_f(obj->normals, F);
+	read_bin_aux_u(obj->indicies, F);
+	read_bin_aux_f(obj->N_verts, F);
+	read_bin_aux_u(obj->N_indicies, F);
+
+	obj->vert_num = obj->verts.size() / 3;
+	obj->ind_num = obj->indicies.size();
 }
 
 void load_object(g_object *obj, char *file)
@@ -76,7 +97,21 @@ void load_object(g_object *obj, char *file)
 	//ifstream ifs(file, ifstream::in);
 	//freopen(file, "r", stdin);
 
-	FILE *F = fopen(file, "rt");
+	FILE *F;
+
+	char *File = new char[100];
+	File[0] = 0;
+	strcat(File, file);
+	strcat(File, "bin");
+
+	if (F = fopen(File, "rb"))
+	{
+		load_bin(obj, F);
+		obj->file = file;
+		return;
+	}
+
+	F = fopen(file, "rt");
 
 	vector<GLfloat> vt;
 	vector<GLfloat> uv;
@@ -177,10 +212,13 @@ void load_object(g_object *obj, char *file)
 		obj->N_indicies.push_back(i * 2 + 1);
 	}
 
-	delete[] s;
 	fclose(F);
 
-	save_bin(obj, file);
+	F = fopen(File, "wb");
+	save_bin(obj, F);
+
+	delete[] s;
+	delete[] File;
 }
 
 int reg_object(char *file)
