@@ -123,6 +123,7 @@ void scene_tact()
 			if (bullets[j].visible && bullets[j].intercept(targets[i], OT_SPHERE))
 			{
 				targets[i].texture = Ryoba_tex;
+				targets[i].set_size(targets[i].size * 1.1);
 				bullets[j].visible = false;
 			}
 	

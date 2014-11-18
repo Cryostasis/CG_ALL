@@ -176,6 +176,12 @@ void mesh_t::move_to(vec3 v)
 	position = v;
 }
 
+void mesh_t::set_size(float sz)
+{
+	size = sz;
+	scale = GLScale(sz, sz, sz);
+}
+
 void mesh_t::look_at(vec3 pos, vec3 target, vec3 up)
 {
 	position = pos;

@@ -45,6 +45,7 @@ public:
 	void move_to(vec3 v);
 	void look_at(vec3 pos, vec3 target, vec3 up);
 	void look_at_dir(vec3 pos, vec3 dir, vec3 up);
+	void set_size(float sz);
 
 	GLuint VAO;
 	GLuint VBO[4];

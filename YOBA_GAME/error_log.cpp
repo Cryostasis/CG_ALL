@@ -26,7 +26,8 @@ char *error_to_string(int err)
 
 void halt()
 {
-	print_log();
+	//print_log();
+	system("pause");
 	exit(ST_UNKNOWN_ERROR);
 }
 

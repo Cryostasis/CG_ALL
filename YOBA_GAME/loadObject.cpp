@@ -5,6 +5,7 @@
 #include <vector>
 
 #include "loadObject.h"
+#include "error_log.h"
 
 using namespace std;
 
@@ -112,6 +113,9 @@ void load_object(g_object *obj, char *file)
 	}
 
 	F = fopen(file, "rt");
+
+	if (!F)
+		raise_error("Can't load .obj file", true, true);
 
 	vector<GLfloat> vt;
 	vector<GLfloat> uv;
