@@ -1,13 +1,15 @@
 #version 330 core
 //#extension GL_EXT_texture_array: enable
+#extension GL_ARB_explicit_uniform_location: enable
 
 #define FRAG_OUTPUT0 0
+#define USE_TEX 5
 
 #define MAX_P_LIGHTS 3
 #define MAX_D_LIGHTS 3
 #define MAX_S_LIGHTS 3
 
-uniform int use_tex;
+layout(location = USE_TEX) uniform int use_tex;
 
 uniform sampler2D pLight_depth_tex;
 uniform sampler2D dLight_depth_tex;

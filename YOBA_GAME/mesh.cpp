@@ -76,6 +76,21 @@ mesh_t::mesh_t(vec3 pos, GLfloat sz, int mater, GLuint tex, g_object *mod)
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, N_VBO[1]);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, ind_cnt * 2 * sizeof(GLuint), &model->N_indicies[0], GL_STATIC_DRAW);
 
+
+	glGenVertexArrays(1, &P_VAO);
+	glBindVertexArray(P_VAO);
+
+	glGenBuffers(2, P_VBO);
+
+	glBindBuffer(GL_ARRAY_BUFFER, P_VBO[0]);
+	glBufferData(GL_ARRAY_BUFFER, vert_cnt * 2 * sizeof(GLfloat) * 3, &model->P_verts[0], GL_STATIC_DRAW);
+
+	glVertexAttribPointer(VERT_POSITION, 3, GL_FLOAT, GL_FALSE, 0, 0);
+	glEnableVertexAttribArray(VERT_POSITION);
+
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, P_VBO[1]);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, ind_cnt * 2 * sizeof(GLuint), &model->P_indicies[0], GL_STATIC_DRAW);
+
 	check_GL_error();
 }
 
@@ -101,23 +116,37 @@ void mesh_t::render(GLuint program, camera_t &camera)
 	glDrawElements(GL_TRIANGLES, ind_cnt, GL_UNSIGNED_INT, NULL);
 }
 
-void mesh_t::render_normals(GLuint program, camera_t &camera, int mat)
+void mesh_t::render_normals(GLuint program, camera_t &camera)
 {
-	//camera.setup(program, get_model_mat());
-	material_setup(program, mat);
+	camera.setup(program, get_model_mat());
+	//material_setup(program, mat);
 
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, norm_tex);
-	glUniform1i(material_locs.texture_loc, 0);
+	//glActiveTexture(GL_TEXTURE0);
+	//glBindTexture(GL_TEXTURE_2D, norm_tex);
+	//glUniform1i(material_locs.texture_loc, 0);
+
+	vec3 buf = vec3(1.0, 0.0, 0.0);
+
+	glUniform3fv(LINE_COLOR_LOC, 1, buf.v);
 
 	glBindVertexArray(N_VAO);
 	glDrawElements(GL_LINES, ind_cnt * 2, GL_UNSIGNED_INT, NULL);
 }
 
-void mesh_t::render_with_norms(GLuint program, camera_t &camera, int mat)
+void mesh_t::render_pol_mesh(GLuint program, camera_t &camera)
+{
+	camera.setup(program, get_model_mat());
+
+	glUniform3fv(LINE_COLOR_LOC, 1, &vec3(0.0, 1.0, 0.0).v[0]);
+
+	glBindVertexArray(P_VAO);
+	glDrawElements(GL_LINES, ind_cnt * 2, GL_UNSIGNED_INT, NULL);
+}
+
+void mesh_t::render_with_norms(GLuint program, camera_t &camera)
 {
 	render(program, camera);
-	render_normals(program, camera, mat);
+	render_normals(program, camera);
 }
 
 void mesh_t::rotate(GLfloat x, GLfloat y, GLfloat z)

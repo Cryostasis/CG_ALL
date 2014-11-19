@@ -7,6 +7,9 @@
 
 #define FRAG_OUTPUT0   0
 
+#define USE_TEX_LOC	   5
+#define LINE_COLOR_LOC 6
+
 #include "light.h"
 #include "camera.h"
 #include "loadObject.h"
@@ -31,8 +34,9 @@ public:
 	mesh_t(vec3 pos, GLfloat sz, int mater, GLuint tex, g_object *mod);
 	mat4 get_model_mat();
 	void render(GLuint program, camera_t &camera);
-	void render_normals(GLuint program, camera_t &camera, int mat);
-	void render_with_norms(GLuint program, camera_t &camera, int mat);
+	void render_normals(GLuint program, camera_t &camera);
+	void render_pol_mesh(GLuint program, camera_t &camera);
+	void render_with_norms(GLuint program, camera_t &camera);
 	void rotate(GLfloat x, GLfloat y, GLfloat z);
 	void rotate(vec3 vec);
 	void rotate_strict(GLfloat x, GLfloat y, GLfloat z);
@@ -51,6 +55,8 @@ public:
 	GLuint VBO[4];
 	GLuint N_VAO;
 	GLuint N_VBO[2];
+	GLuint P_VAO;
+	GLuint P_VBO[2];
 	int vert_cnt;
 	int ind_cnt;
 	vec3 position;

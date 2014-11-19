@@ -10,6 +10,7 @@ int init_programs();
 extern GLuint Program;
 extern GLuint depth_program;
 extern GLuint quad_program;
+extern GLuint line_program;
 
 extern GLint use_tex_loc;
 

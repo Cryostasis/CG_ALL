@@ -51,12 +51,17 @@ void save_bin_aux_u(vector<GLuint> &v, FILE *F)
 
 void save_bin(g_object *obj, FILE *F)
 {
+	int buf = BIN_FORMAT_VER;
+	fwrite(&buf, sizeof(int), 1, F);
+
 	save_bin_aux_f(obj->verts, F);
 	save_bin_aux_f(obj->texcoords, F);
 	save_bin_aux_f(obj->normals, F);
 	save_bin_aux_u(obj->indicies, F);
 	save_bin_aux_f(obj->N_verts, F);
 	save_bin_aux_u(obj->N_indicies, F);
+	save_bin_aux_f(obj->P_verts, F);
+	save_bin_aux_u(obj->P_indicies, F);
 }
 
 void read_bin_aux_f(vector<GLfloat> &v, FILE *F)
@@ -80,17 +85,25 @@ void read_bin_aux_u(vector<GLuint> &v, FILE *F)
 	fread(&v[0], sizeof(GLuint), buf, F);
 }
 
-void load_bin(g_object *obj, FILE *F)
+int load_bin(g_object *obj, FILE *F)
 {
+	int buf;
+	fread(&buf, sizeof(int), 1, F);
+	if (buf != BIN_FORMAT_VER)
+		return LS_FAIL;
+
 	read_bin_aux_f(obj->verts, F);
 	read_bin_aux_f(obj->texcoords, F);
 	read_bin_aux_f(obj->normals, F);
 	read_bin_aux_u(obj->indicies, F);
 	read_bin_aux_f(obj->N_verts, F);
 	read_bin_aux_u(obj->N_indicies, F);
+	read_bin_aux_f(obj->P_verts, F);
+	read_bin_aux_u(obj->P_indicies, F);
 
 	obj->vert_num = obj->verts.size() / 3;
 	obj->ind_num = obj->indicies.size();
+	return LS_OK;
 }
 
 void load_object(g_object *obj, char *file)
@@ -105,12 +118,12 @@ void load_object(g_object *obj, char *file)
 	strcat(File, file);
 	strcat(File, "bin");
 
-	if (F = fopen(File, "rb"))
-	{
-		load_bin(obj, F);
-		obj->file = file;
-		return;
-	}
+	if (LOAD_BIN)
+		if ((F = fopen(File, "rb")) && load_bin(obj, F) == LS_OK)
+		{
+			obj->file = file;
+			return;
+		}
 
 	F = fopen(file, "rt");
 
@@ -214,6 +227,42 @@ void load_object(g_object *obj, char *file)
 
 		obj->N_indicies.push_back(i * 2);
 		obj->N_indicies.push_back(i * 2 + 1);
+	}
+
+	for (i = 0; i < obj->vert_num / 3; i++)
+	{
+		obj->P_verts.push_back(obj->verts[i * 9	   ]);
+		obj->P_verts.push_back(obj->verts[i * 9 + 1]);
+		obj->P_verts.push_back(obj->verts[i * 9 + 2]);
+
+		obj->P_verts.push_back(obj->verts[i * 9 + 3]);
+		obj->P_verts.push_back(obj->verts[i * 9 + 4]);
+		obj->P_verts.push_back(obj->verts[i * 9 + 5]);
+
+
+		obj->P_verts.push_back(obj->verts[i * 9 + 3]);
+		obj->P_verts.push_back(obj->verts[i * 9 + 4]);
+		obj->P_verts.push_back(obj->verts[i * 9 + 5]);
+						
+		obj->P_verts.push_back(obj->verts[i * 9 + 6]);
+		obj->P_verts.push_back(obj->verts[i * 9 + 7]);
+		obj->P_verts.push_back(obj->verts[i * 9 + 8]);
+
+
+		obj->P_verts.push_back(obj->verts[i * 9 + 6]);
+		obj->P_verts.push_back(obj->verts[i * 9 + 7]);
+		obj->P_verts.push_back(obj->verts[i * 9 + 8]);
+
+		obj->P_verts.push_back(obj->verts[i * 9]);
+		obj->P_verts.push_back(obj->verts[i * 9 + 1]);
+		obj->P_verts.push_back(obj->verts[i * 9 + 2]);
+			 
+		obj->P_indicies.push_back(i * 6);
+		obj->P_indicies.push_back(i * 6 + 1);
+		obj->P_indicies.push_back(i * 6 + 2);
+		obj->P_indicies.push_back(i * 6 + 3);
+		obj->P_indicies.push_back(i * 6 + 4);
+		obj->P_indicies.push_back(i * 6 + 5);
 	}
 
 	fclose(F);

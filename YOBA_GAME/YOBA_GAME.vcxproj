@@ -43,6 +43,8 @@
     <None Include="shaders\fs3.sh" />
     <None Include="shaders\fs4.sh" />
     <None Include="shaders\fs5.sh" />
+    <None Include="shaders\line_f.sh" />
+    <None Include="shaders\line_v.sh" />
     <None Include="shaders\quad_f.sh" />
     <None Include="shaders\quad_v.sh" />
     <None Include="shaders\shad_f.sh" />

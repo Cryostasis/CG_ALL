@@ -16,6 +16,7 @@ GLuint Program;
 GLuint depth_program;
 GLuint normals_program;
 GLuint quad_program;
+GLuint line_program;
 
 GLint use_tex_loc;
 
@@ -171,9 +172,9 @@ int init_programs()
 	if (err)
 		return err;
 
-	/*err = init_shaders("shaders/quad_v.sh", "shaders/quad_f.sh", quad_program);
+	err = init_shaders("shaders/line_v.sh", "shaders/line_f.sh", line_program);
 	if (err)
-		return err;*/
+		return err;
 
 	return ST_OK;
 }

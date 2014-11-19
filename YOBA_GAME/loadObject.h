@@ -1,6 +1,12 @@
 #ifndef _LOADOBJECT_H_INC_
 #define _LOADOBJECT_H_INC_
 
+#define LOAD_BIN 1
+
+#define BIN_FORMAT_VER 1
+
+enum LOAD_STATE {LS_OK, LS_FAIL};
+
 #include <GL/glew.h>
 #include <GL/freeglut.h>
 #include <vector>
@@ -19,6 +25,9 @@ struct g_object
 
 	std::vector<GLfloat> N_verts;
 	std::vector<GLuint>  N_indicies;
+
+	std::vector<GLfloat> P_verts;
+	std::vector<GLuint>  P_indicies;
 
 	std::string file;
 };

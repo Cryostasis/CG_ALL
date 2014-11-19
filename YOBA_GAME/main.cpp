@@ -51,7 +51,9 @@ GLfloat fov = 45.0, znear = 0.1, zfar = 100.0;
 
 mat4 matrixViewProjection;
 
+bool flag_render_objects = true;
 bool flag_render_normals = false;
+bool flag_render_pol_mesh = false;
 
 int glut_window;
 
@@ -173,30 +175,64 @@ void render(GLuint program, camera_t &camera)
 
 	if (Program == program)
 		setup_lights(program);
-	for (int i = 0; i < mesh_num; i++)
+	if (flag_render_objects)
 	{
-		if (!use_massive && USE_MASSIVE_MODELS && i == mesh_num - 8)
-			break;
-		if (meshes[i].visible)
-			if (flag_render_normals && program == Program)
-				meshes[i].render_with_norms(program, camera, 3);
-			else
+		for (int i = 0; i < mesh_num; i++)
+		{
+			if (!use_massive && USE_MASSIVE_MODELS && i == mesh_num - 8)
+				break;
+			if (meshes[i].visible)
 				meshes[i].render(program, camera);
-	}
+		}
 
-	for (int i = 0; i < targ_num; i++)
-		if (targets[i].visible)
-			if (flag_render_normals && program == Program)
-				targets[i].render_with_norms(program, camera, 3);
-			else
+		for (int i = 0; i < targ_num; i++)
+			if (targets[i].visible)
 				targets[i].render(program, camera);
 
-	for (int i = 0; i < MAX_BULLETS; i++)
-		if (bullets[i].visible)
-			if (flag_render_normals && program == Program)
-				bullets[i].render_with_norms(program, camera, 3);
-			else
+		for (int i = 0; i < MAX_BULLETS; i++)
+			if (bullets[i].visible)
 				bullets[i].render(program, camera);
+	}
+
+	glUseProgram(line_program);
+
+	if (flag_render_normals && program == Program)
+	{
+		for (int i = 0; i < mesh_num; i++)
+		{
+			if (!use_massive && USE_MASSIVE_MODELS && i == mesh_num - 8)
+				break;
+			if (meshes[i].visible)
+				meshes[i].render_normals(line_program, camera);
+		}
+
+		for (int i = 0; i < targ_num; i++)
+			if (targets[i].visible)
+				targets[i].render_normals(line_program, camera);
+
+		for (int i = 0; i < MAX_BULLETS; i++)
+			if (bullets[i].visible)
+				bullets[i].render_normals(line_program, camera);
+	}
+
+	if (flag_render_pol_mesh && program == Program)
+	{
+		for (int i = 0; i < mesh_num; i++)
+		{
+			if (!use_massive && USE_MASSIVE_MODELS && i == mesh_num - 8)
+				break;
+			if (meshes[i].visible)
+				meshes[i].render_pol_mesh(line_program, camera);
+		}
+
+		for (int i = 0; i < targ_num; i++)
+			if (targets[i].visible)
+				targets[i].render_pol_mesh(line_program, camera);
+
+		for (int i = 0; i < MAX_BULLETS; i++)
+			if (bullets[i].visible)
+				bullets[i].render_pol_mesh(line_program, camera);
+	}
 
 	check_GL_error();
 
@@ -448,9 +484,15 @@ void on_press_spec_key(int key, int x, int y)
 	case GLUT_KEY_F1:		{meshes[1].visible = !meshes[1].visible; toggle_point_setup(); break; }
 	case GLUT_KEY_F2:		{toggle_direct_setup(); break; }
 	case GLUT_KEY_F3:		{meshes[6].visible = !meshes[6].visible; toggle_spot_setup(); break; }
-	case GLUT_KEY_F4:		{flag_use_tex = abs(flag_use_tex - 1);  glUniform1i(use_tex_loc, flag_use_tex); break; }
+	case GLUT_KEY_F4:		{
+								flag_use_tex = abs(flag_use_tex - 1);  
+								glUseProgram(Program); glUniform1i(use_tex_loc, flag_use_tex); 
+								glUseProgram(line_program); glUniform1i(use_tex_loc, flag_use_tex); 
+								break; }
 	case GLUT_KEY_F5:		{flag_render_normals = !flag_render_normals; break; }
-	case GLUT_KEY_F6:		{use_massive = !use_massive; break; }
+	case GLUT_KEY_F6:		{flag_render_pol_mesh = !flag_render_pol_mesh; break; }
+	case GLUT_KEY_F7:		{flag_render_objects = !flag_render_objects; break; }
+	case GLUT_KEY_F8:		{use_massive = !use_massive; break; }
 	}
 }
 
