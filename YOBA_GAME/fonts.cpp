@@ -1,6 +1,6 @@
 #include "math/math3d.h"
 #include "math/mathgl.h"
-#include "tinyxml.h"
+#include "tinyXML/tinyxml.h"
 #include "glerrors.h"
 #include "error_log.h"
 #include "textures.h"

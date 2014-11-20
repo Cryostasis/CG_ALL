@@ -584,7 +584,7 @@ int init()
 	glutTimerFunc(timer_ticks, timer, 0);
 
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
+	
 	lx = window[0] / 2 + wind_pos[0];
 	ly = window[1] / 2 + wind_pos[1];
 	SetCursorPos(lx, ly);
