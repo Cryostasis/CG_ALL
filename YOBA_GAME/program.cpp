@@ -17,6 +17,7 @@ GLuint depth_program;
 GLuint normals_program;
 GLuint quad_program;
 GLuint line_program;
+GLuint text_program;
 
 GLint use_tex_loc;
 
@@ -150,7 +151,7 @@ int init_shaders(char *p_v, char* p_f, GLuint &prog)
 
 int init_programs()
 {
-	int err = init_shaders("shaders/vs5.sh", "shaders/fs5.sh", Program);
+	int err = init_shaders("shaders/vs5.glsl", "shaders/fs5.glsl", Program);
 	if (err)
 		return err;
 
@@ -168,11 +169,15 @@ int init_programs()
 	get_unif_loc(&transform_locs.normal, Program, "transform.normal");
 	get_unif_loc(&transform_locs.viewPosition, Program, "transform.viewPosition");
 
-	err = init_shaders("shaders/shad_v.sh", "shaders/shad_f.sh", depth_program);
+	err = init_shaders("shaders/shad_v.glsl", "shaders/shad_f.glsl", depth_program);
 	if (err)
 		return err;
 
-	err = init_shaders("shaders/line_v.sh", "shaders/line_f.sh", line_program);
+	err = init_shaders("shaders/line_v.glsl", "shaders/line_f.glsl", line_program);
+	if (err)
+		return err;
+
+	err = init_shaders("shaders/text_v.glsl", "shaders/text_f.glsl", text_program);
 	if (err)
 		return err;
 

@@ -283,3 +283,10 @@ int reg_object(char *file)
 	obj_count++;
 	return obj_count - 1;
 }
+
+g_object clone_obj(char *file)
+{
+	int num = reg_object(file);
+	g_object res = objects[num];
+	return res;
+}

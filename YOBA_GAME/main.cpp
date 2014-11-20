@@ -21,10 +21,12 @@
 #include "camera.h"
 #include "physics.h"
 #include "winfuncs.h"
+#include "fonts.h"
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string>
+#include <queue>
 #include <iostream>
 #include <fstream>
 #include <cmath>
@@ -38,8 +40,11 @@ using namespace std;
 #define VSYNC				1
 
 int window[2] = { 1280, 720 };
-int wind_pos[2] = { 0, 0 };
+int wind_pos[2] = { 70, 0 };
 int shad_size = 6;
+
+long long last_ticks;
+queue<long long> frames;
 
 bool use_massive = USE_MASSIVE_MODELS;
 int timer_ticks = 1;
@@ -149,33 +154,27 @@ void scene_tact()
 		meshes[i].rotate_around_y_central(p_data.position[0], diff_angle, diff_angle);
 }
 
+void activate_tex(GLuint unit, GLuint tex, char *unif_name)
+{
+	glActiveTexture(GL_TEXTURE0 + unit);
+	glBindTexture(GL_TEXTURE_2D, tex);
+	GLint texloc = glGetUniformLocation(Program, unif_name);
+	glUniform1i(texloc, unit);
+}
+
 void render(GLuint program, camera_t &camera)
 {
-	/*glDepthFunc(GL_LESS);
-	glEnable(GL_DEPTH_TEST);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);*/
-
 	glUseProgram(program);
-	
-	glActiveTexture(GL_TEXTURE0 + 1);
-	glBindTexture(GL_TEXTURE_2D, p_data.depth_tex[0]);
-	GLint texloc = glGetUniformLocation(program, "pLight_depth_tex");
-	glUniform1i(texloc, 1);
-	
-	glActiveTexture(GL_TEXTURE0 + 2);
-	glBindTexture(GL_TEXTURE_2D, d_data.depth_tex[0]);
-	texloc = glGetUniformLocation(program, "dLight_depth_tex");
-	glUniform1i(texloc, 2);
-	
-	glActiveTexture(GL_TEXTURE0 + 3);
-	glBindTexture(GL_TEXTURE_2D, s_data.depth_tex[0]);
-	texloc = glGetUniformLocation(program, "sLight_depth_tex");
-	glUniform1i(texloc, 3);
-
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_MODE, GL_COMPARE_REF_TO_TEXTURE);
 
 	if (Program == program)
+	{
+		activate_tex(1, p_data.depth_tex[0], "pLight_depth_tex");
+		activate_tex(2, d_data.depth_tex[0], "dLight_depth_tex");
+		activate_tex(3, s_data.depth_tex[0], "sLight_depth_tex");
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_MODE, GL_COMPARE_REF_TO_TEXTURE);
+
 		setup_lights(program);
+	}
 	if (flag_render_objects)
 	{
 		for (int i = 0; i < mesh_num; i++)
@@ -235,6 +234,9 @@ void render(GLuint program, camera_t &camera)
 				bullets[i].render_pol_mesh(line_program, camera);
 	}
 
+	glUseProgram(text_program);
+	render_text();
+
 	check_GL_error();
 
 	if (Program == program) glutSwapBuffers();
@@ -244,6 +246,7 @@ void render_scene()
 {
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_BLEND);
 	glViewport(0, 0, window[0], window[1]);
 	glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -255,6 +258,8 @@ void render_scene()
 void render_shadows(GLuint FBO, camera_t & camera)
 {
 	glBindFramebuffer(GL_FRAMEBUFFER, FBO);
+	glDisable(GL_DEPTH_TEST);
+	glDisable(GL_BLEND);
 	glViewport(0, 0, window[0] * shad_size, window[1] * shad_size);
 	glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE);
 	glDepthMask(GL_TRUE);
@@ -442,6 +447,22 @@ void on_mouse_move(int x, int y)
 
 void timer(int i)
 {
+	static bool init;
+	if (!init)
+		last_ticks = GetTickCount();
+	init = true;
+
+	long long new_ticks = GetTickCount();
+	while (frames.size() > 0 && new_ticks - frames.front() > 1000)
+		frames.pop();
+
+	char *buf = new char[5];
+	sprintf(buf, "%d", frames.size());
+	prepare_text(window[0], window[1], 0, 0, buf, vec4(1.0, 1.0, 1.0, 1.0), aspect, 20);
+
+	frames.push(new_ticks);
+	last_ticks = new_ticks;
+
 	scene_tact();
 	render_all();
 	update_pos();
@@ -562,6 +583,8 @@ int init()
 	glutDisplayFunc(render_all);
 	glutTimerFunc(timer_ticks, timer, 0);
 
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
 	lx = window[0] / 2 + wind_pos[0];
 	ly = window[1] / 2 + wind_pos[1];
 	SetCursorPos(lx, ly);
@@ -647,10 +670,14 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	if (wglSwapIntervalEXT) 
 		wglSwapIntervalEXT(VSYNC);
 
+	active_font("font");
+
 	load_screen_off();
 	glut_window = glutGetWindow();
 	glutShowWindow();
 
 	ShowCursor(0);
 	glutMainLoop();
+
+	return 0;
 }

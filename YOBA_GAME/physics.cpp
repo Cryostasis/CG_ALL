@@ -19,7 +19,8 @@ void physical_mesh_t::physics_analize()
 	position += speed;
 }
 
-physical_mesh_t::physical_mesh_t(vec3 pos, GLfloat sz, int mater, GLuint tex, g_object *mod, vec3 spd): mesh_t(pos, sz, mater, tex, mod) 
+physical_mesh_t::physical_mesh_t(vec3 pos, GLfloat sz, int mater, GLuint tex, g_object *mod, vec3 spd): 
+	mesh_t(pos, vec3(sz, sz, sz), mater, tex, mod) 
 {
 	speed = spd;
 }
@@ -29,7 +30,8 @@ bullet_t::bullet_t()
 
 }
 
-bullet_t::bullet_t(vec3 pos, GLfloat sz, int mater, GLuint tex, g_object *mod, vec3 spd, int life): physical_mesh_t(pos, sz, mater, tex, mod, spd)
+bullet_t::bullet_t(vec3 pos, GLfloat sz, int mater, GLuint tex, g_object *mod, vec3 spd, int life): 
+	physical_mesh_t(pos, sz, mater, tex, mod, spd)
 {
 	this->life = life;
 	max_life = life;

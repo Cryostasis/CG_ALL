@@ -8,6 +8,9 @@ transform_loc_t transform_locs;
 
 camera_t::camera_t()
 {
+	position = vec3(0, 0, 0);
+	projection = mat4_identity;
+	rotation = vec3(0, 0, 0);
 }
 
 camera_t::camera_t(float x, float y, float z)

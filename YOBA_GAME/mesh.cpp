@@ -18,7 +18,7 @@ mesh_t::mesh_t()
 
 }
 
-mesh_t::mesh_t(vec3 pos, GLfloat sz, int mater, GLuint tex, g_object *mod)
+mesh_t::mesh_t(vec3 pos, vec3 scale, int mater, GLuint tex, g_object *mod)
 {
 	vert_cnt = mod->vert_num;
 	ind_cnt = mod->ind_num;
@@ -26,8 +26,8 @@ mesh_t::mesh_t(vec3 pos, GLfloat sz, int mater, GLuint tex, g_object *mod)
 	position = pos;
 	rotation = mat4_identity;
 	rotation_angle = vec3(0, 0, 0);
-	scale = GLScale(sz, sz, sz);
-	size = sz;
+	this->scale = GLScale(scale);
+	size = fmax(fmax(scale.v[0], scale.v[1]), scale.v[2]);
 	material = mater;
 	texture = tex;
 	visible = true;
@@ -233,7 +233,7 @@ void mesh_create_cube(mesh_t &obj, vec3 position, GLfloat scale, int material, G
 	flag = true;
 	if (index == -1)
 		return;
-	obj = mesh_t(position, scale, material, tex, &objects[index]);
+	obj = mesh_t(position, vec3(scale, scale, scale), material, tex, &objects[index]);
 }
 
 void mesh_create_sphere(mesh_t &obj, vec3 position, GLfloat scale, int material, GLuint tex)
@@ -246,7 +246,7 @@ void mesh_create_sphere(mesh_t &obj, vec3 position, GLfloat scale, int material,
 	flag = true;
 	if (index == -1)
 		return;
-	obj = mesh_t(position, scale, material, tex, &objects[index]);
+	obj = mesh_t(position, vec3(scale, scale, scale), material, tex, &objects[index]);
 }
 
 void mesh_create_from_file(char *file, mesh_t &obj, vec3 position, GLfloat scale, int material, GLuint tex)
@@ -254,5 +254,10 @@ void mesh_create_from_file(char *file, mesh_t &obj, vec3 position, GLfloat scale
 	int index = reg_object(file);
 	if (index == -1)
 		return;
-	obj = mesh_t(position, scale, material, tex, &objects[index]);
+	obj = mesh_t(position, vec3(scale, scale, scale), material, tex, &objects[index]);
+}
+
+void mesh_create_from_clone(mesh_t &obj, g_object clone, vec3 position, GLfloat scale, GLuint tex)
+{
+	obj = mesh_t(position, vec3(scale, scale, scale), 0, tex, &clone);
 }

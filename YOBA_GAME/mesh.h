@@ -1,14 +1,15 @@
 #ifndef _GRAPHOBJ_H_INC_
 #define _GRAPHOBJ_H_INC_
 
-#define VERT_POSITION  0
-#define VERT_TEXCOORD  1
-#define VERT_NORMAL    2
+#define VERT_POSITION	0
+#define VERT_TEXCOORD	1
+#define VERT_NORMAL		2
 
-#define FRAG_OUTPUT0   0
+#define FRAG_OUTPUT0	0
 
-#define USE_TEX_LOC	   5
-#define LINE_COLOR_LOC 6
+#define USE_TEX_LOC		5
+#define LINE_COLOR_LOC  6
+#define FONT_TEX		7
 
 #include "light.h"
 #include "camera.h"
@@ -31,7 +32,7 @@ class mesh_t
 {
 public:
 	mesh_t();
-	mesh_t(vec3 pos, GLfloat sz, int mater, GLuint tex, g_object *mod);
+	mesh_t(vec3 pos, vec3 scale, int mater, GLuint tex, g_object *mod);
 	mat4 get_model_mat();
 	void render(GLuint program, camera_t &camera);
 	void render_normals(GLuint program, camera_t &camera);
@@ -63,6 +64,7 @@ public:
 	vec3 rotation_angle;
 	mat4 rotation;
 	mat4 scale;
+	vec3 scl;
 	GLfloat size;
 	int material;
 	GLuint texture;

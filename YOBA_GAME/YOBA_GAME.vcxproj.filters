@@ -13,6 +13,12 @@
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
       <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
+    <Filter Include="Header Files\XML">
+      <UniqueIdentifier>{a573645a-4069-4526-9f54-8a6fbba5eaae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\XML">
+      <UniqueIdentifier>{86cf3811-cda9-48ac-a209-3f0a47a7f0a8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="error_log.h">
@@ -47,6 +53,15 @@
     </ClInclude>
     <ClInclude Include="winfuncs.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="fonts.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="tinyXML\tinystr.h">
+      <Filter>Header Files\XML</Filter>
+    </ClInclude>
+    <ClInclude Include="tinyXML\tinyxml.h">
+      <Filter>Header Files\XML</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -86,54 +101,75 @@
     <ClCompile Include="winfuncs.cpp">
       <Filter>Resource Files</Filter>
     </ClCompile>
+    <ClCompile Include="fonts.cpp">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
+    <ClCompile Include="tinyXML\tinyxml.cpp">
+      <Filter>Resource Files\XML</Filter>
+    </ClCompile>
+    <ClCompile Include="tinyXML\tinyxmlerror.cpp">
+      <Filter>Resource Files\XML</Filter>
+    </ClCompile>
+    <ClCompile Include="tinyXML\tinyxmlparser.cpp">
+      <Filter>Resource Files\XML</Filter>
+    </ClCompile>
+    <ClCompile Include="tinyXML\tinystr.cpp">
+      <Filter>Resource Files\XML</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="shaders\fs1.sh">
+    <None Include="shaders\shad_f.glsl">
       <Filter>Shaders</Filter>
     </None>
-    <None Include="shaders\fs2.sh">
+    <None Include="shaders\fs1.glsl">
       <Filter>Shaders</Filter>
     </None>
-    <None Include="shaders\fs3.sh">
+    <None Include="shaders\fs2.glsl">
       <Filter>Shaders</Filter>
     </None>
-    <None Include="shaders\fs4.sh">
+    <None Include="shaders\fs3.glsl">
       <Filter>Shaders</Filter>
     </None>
-    <None Include="shaders\fs5.sh">
+    <None Include="shaders\fs4.glsl">
       <Filter>Shaders</Filter>
     </None>
-    <None Include="shaders\shad_f.sh">
+    <None Include="shaders\fs5.glsl">
       <Filter>Shaders</Filter>
     </None>
-    <None Include="shaders\shad_v.sh">
+    <None Include="shaders\line_f.glsl">
       <Filter>Shaders</Filter>
     </None>
-    <None Include="shaders\vs1.sh">
+    <None Include="shaders\line_v.glsl">
       <Filter>Shaders</Filter>
     </None>
-    <None Include="shaders\vs2.sh">
+    <None Include="shaders\quad_f.glsl">
       <Filter>Shaders</Filter>
     </None>
-    <None Include="shaders\vs3.sh">
+    <None Include="shaders\quad_v.glsl">
       <Filter>Shaders</Filter>
     </None>
-    <None Include="shaders\vs4.sh">
+    <None Include="shaders\shad_v.glsl">
       <Filter>Shaders</Filter>
     </None>
-    <None Include="shaders\vs5.sh">
+    <None Include="shaders\vs1.glsl">
       <Filter>Shaders</Filter>
     </None>
-    <None Include="shaders\quad_f.sh">
+    <None Include="shaders\vs2.glsl">
       <Filter>Shaders</Filter>
     </None>
-    <None Include="shaders\quad_v.sh">
+    <None Include="shaders\vs3.glsl">
       <Filter>Shaders</Filter>
     </None>
-    <None Include="shaders\line_f.sh">
+    <None Include="shaders\vs4.glsl">
       <Filter>Shaders</Filter>
     </None>
-    <None Include="shaders\line_v.sh">
+    <None Include="shaders\vs5.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="shaders\text_f.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="shaders\text_v.glsl">
       <Filter>Shaders</Filter>
     </None>
   </ItemGroup>

@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<font>
+	<char id="65" x="0" y="0" width="43" height="60" />
+	<spacing id="65" a="0" b="30" c="0" />
+	<char id="66" x="44" y="0" width="43" height="60" />
+	<spacing id="66" a="3" b="23" c="1" />
+	<char id="67" x="88" y="0" width="43" height="60" />
+	<spacing id="67" a="2" b="23" c="1" />
+	<char id="68" x="132" y="0" width="43" height="60" />
+	<spacing id="68" a="3" b="26" c="2" />
+	<char id="69" x="176" y="0" width="43" height="60" />
+	<spacing id="69" a="3" b="19" c="2" />
+	<char id="70" x="220" y="0" width="43" height="60" />
+	<spacing id="70" a="3" b="18" c="1" />
+	<char id="71" x="264" y="0" width="43" height="60" />
+	<spacing id="71" a="1" b="28" c="2" />
+	<char id="72" x="308" y="0" width="43" height="60" />
+	<spacing id="72" a="3" b="25" c="3" />
+	<char id="73" x="352" y="0" width="43" height="60" />
+	<spacing id="73" a="3" b="7" c="3" />
+	<char id="74" x="396" y="0" width="43" height="60" />
+	<spacing id="74" a="0" b="13" c="3" />
+	<char id="75" x="440" y="0" width="43" height="60" />
+	<spacing id="75" a="3" b="23" c="1" />
+	<char id="76" x="0" y="61" width="43" height="60" />
+	<spacing id="76" a="3" b="18" c="0" />
+	<char id="77" x="44" y="61" width="43" height="60" />
+	<spacing id="77" a="3" b="37" c="3" />
+	<char id="78" x="88" y="61" width="43" height="60" />
+	<spacing id="78" a="3" b="26" c="3" />
+	<char id="79" x="132" y="61" width="43" height="60" />
+	<spacing id="79" a="2" b="30" c="1" />
+	<char id="80" x="176" y="61" width="43" height="60" />
+	<spacing id="80" a="3" b="22" c="1" />
+	<char id="81" x="220" y="61" width="43" height="60" />
+	<spacing id="81" a="2" b="33" c="-1" />
+	<char id="82" x="264" y="61" width="43" height="60" />
+	<spacing id="82" a="3" b="24" c="1" />
+	<char id="83" x="308" y="61" width="43" height="60" />
+	<spacing id="83" a="1" b="21" c="1" />
+	<char id="84" x="352" y="61" width="43" height="60" />
+	<spacing id="84" a="0" b="24" c="0" />
+	<char id="85" x="396" y="61" width="43" height="60" />
+	<spacing id="85" a="3" b="26" c="3" />
+	<char id="86" x="440" y="61" width="43" height="60" />
+	<spacing id="86" a="0" b="29" c="0" />
+	<char id="87" x="0" y="122" width="43" height="60" />
+	<spacing id="87" a="1" b="43" c="0" />
+	<char id="88" x="44" y="122" width="43" height="60" />
+	<spacing id="88" a="0" b="27" c="0" />
+	<char id="89" x="88" y="122" width="43" height="60" />
+	<spacing id="89" a="0" b="25" c="0" />
+	<char id="90" x="132" y="122" width="43" height="60" />
+	<spacing id="90" a="1" b="22" c="0" />
+	<char id="97" x="176" y="122" width="43" height="60" />
+	<spacing id="97" a="1" b="21" c="2" />
+	<char id="98" x="220" y="122" width="43" height="60" />
+	<spacing id="98" a="3" b="22" c="1" />
+	<char id="99" x="264" y="122" width="43" height="60" />
+	<spacing id="99" a="1" b="19" c="1" />
+	<char id="100" x="308" y="122" width="43" height="60" />
+	<spacing id="100" a="1" b="23" c="2" />
+	<char id="101" x="352" y="122" width="43" height="60" />
+	<spacing id="101" a="1" b="22" c="2" />
+	<char id="102" x="396" y="122" width="43" height="60" />
+	<spacing id="102" a="0" b="16" c="0" />
+	<char id="103" x="440" y="122" width="43" height="60" />
+	<spacing id="103" a="0" b="23" c="0" />
+	<char id="104" x="0" y="183" width="43" height="60" />
+	<spacing id="104" a="3" b="21" c="2" />
+	<char id="105" x="44" y="183" width="43" height="60" />
+	<spacing id="105" a="2" b="8" c="2" />
+	<char id="106" x="88" y="183" width="43" height="60" />
+	<spacing id="106" a="-1" b="11" c="3" />
+	<char id="107" x="132" y="183" width="43" height="60" />
+	<spacing id="107" a="3" b="20" c="1" />
+	<char id="108" x="176" y="183" width="43" height="60" />
+	<spacing id="108" a="3" b="6" c="3" />
+	<char id="109" x="220" y="183" width="43" height="60" />
+	<spacing id="109" a="3" b="34" c="3" />
+	<char id="110" x="264" y="183" width="43" height="60" />
+	<spacing id="110" a="3" b="21" c="2" />
+	<char id="111" x="308" y="183" width="43" height="60" />
+	<spacing id="111" a="1" b="24" c="1" />
+	<char id="112" x="352" y="183" width="43" height="60" />
+	<spacing id="112" a="3" b="22" c="1" />
+	<char id="113" x="396" y="183" width="43" height="60" />
+	<spacing id="113" a="1" b="23" c="2" />
+	<char id="114" x="440" y="183" width="43" height="60" />
+	<spacing id="114" a="3" b="14" c="0" />
+	<char id="115" x="0" y="244" width="43" height="60" />
+	<spacing id="115" a="1" b="17" c="2" />
+	<char id="116" x="44" y="244" width="43" height="60" />
+	<spacing id="116" a="0" b="16" c="1" />
+	<char id="117" x="88" y="244" width="43" height="60" />
+	<spacing id="117" a="3" b="21" c="2" />
+	<char id="118" x="132" y="244" width="43" height="60" />
+	<spacing id="118" a="0" b="23" c="0" />
+	<char id="119" x="176" y="244" width="43" height="60" />
+	<spacing id="119" a="0" b="36" c="1" />
+	<char id="120" x="220" y="244" width="43" height="60" />
+	<spacing id="120" a="0" b="22" c="1" />
+	<char id="121" x="264" y="244" width="43" height="60" />
+	<spacing id="121" a="0" b="23" c="0" />
+	<char id="122" x="308" y="244" width="43" height="60" />
+	<spacing id="122" a="1" b="17" c="1" />
+	<char id="49" x="352" y="244" width="43" height="60" />
+	<spacing id="49" a="3" b="20" c="2" />
+	<char id="50" x="396" y="244" width="43" height="60" />
+	<spacing id="50" a="2" b="21" c="2" />
+	<char id="51" x="440" y="244" width="43" height="60" />
+	<spacing id="51" a="2" b="21" c="2" />
+	<char id="52" x="0" y="305" width="43" height="60" />
+	<spacing id="52" a="0" b="24" c="1" />
+	<char id="53" x="44" y="305" width="43" height="60" />
+	<spacing id="53" a="2" b="21" c="2" />
+	<char id="54" x="88" y="305" width="43" height="60" />
+	<spacing id="54" a="2" b="22" c="1" />
+	<char id="55" x="132" y="305" width="43" height="60" />
+	<spacing id="55" a="2" b="21" c="2" />
+	<char id="56" x="176" y="305" width="43" height="60" />
+	<spacing id="56" a="1" b="23" c="1" />
+	<char id="57" x="220" y="305" width="43" height="60" />
+	<spacing id="57" a="1" b="22" c="2" />
+	<char id="48" x="264" y="305" width="43" height="60" />
+	<spacing id="48" a="1" b="23" c="1" />
+	<char id="46" x="308" y="305" width="43" height="60" />
+	<spacing id="46" a="3" b="7" c="3" />
+	<char id="44" x="352" y="305" width="43" height="60" />
+	<spacing id="44" a="0" b="10" c="3" />
+	<char id="60" x="396" y="305" width="43" height="60" />
+	<spacing id="60" a="1" b="21" c="2" />
+	<char id="62" x="440" y="305" width="43" height="60" />
+	<spacing id="62" a="2" b="21" c="1" />
+	<char id="91" x="0" y="366" width="43" height="60" />
+	<spacing id="91" a="3" b="11" c="2" />
+	<char id="93" x="44" y="366" width="43" height="60" />
+	<spacing id="93" a="2" b="11" c="3" />
+	<char id="123" x="88" y="366" width="43" height="60" />
+	<spacing id="123" a="1" b="15" c="1" />
+	<char id="125" x="132" y="366" width="43" height="60" />
+	<spacing id="125" a="2" b="15" c="0" />
+	<char id="40" x="176" y="366" width="43" height="60" />
+	<spacing id="40" a="2" b="11" c="2" />
+	<char id="41" x="220" y="366" width="43" height="60" />
+	<spacing id="41" a="2" b="11" c="2" />
+	<char id="47" x="264" y="366" width="43" height="60" />
+	<spacing id="47" a="0" b="21" c="0" />
+	<char id="42" x="308" y="366" width="43" height="60" />
+	<spacing id="42" a="3" b="18" c="3" />
+	<char id="45" x="352" y="366" width="43" height="60" />
+	<spacing id="45" a="1" b="13" c="1" />
+	<char id="43" x="396" y="366" width="43" height="60" />
+	<spacing id="43" a="1" b="23" c="0" />
+	<char id="63" x="440" y="366" width="43" height="60" />
+	<spacing id="63" a="2" b="19" c="2" />
+	<char id="33" x="0" y="427" width="43" height="60" />
+	<spacing id="33" a="5" b="8" c="3" />
+	<char id="64" x="44" y="427" width="43" height="60" />
+	<spacing id="64" a="2" b="39" c="3" />
+	<char id="35" x="88" y="427" width="43" height="60" />
+	<spacing id="35" a="0" b="24" c="0" />
+	<char id="36" x="132" y="427" width="43" height="60" />
+	<spacing id="36" a="1" b="22" c="2" />
+	<char id="37" x="176" y="427" width="43" height="60" />
+	<spacing id="37" a="1" b="34" c="1" />
+	<char id="94" x="220" y="427" width="43" height="60" />
+	<spacing id="94" a="0" b="24" c="0" />
+	<char id="38" x="264" y="427" width="43" height="60" />
+	<spacing id="38" a="2" b="31" c="2" />
+	<char id="59" x="308" y="427" width="43" height="60" />
+	<spacing id="59" a="1" b="10" c="3" />
+	<char id="58" x="352" y="427" width="43" height="60" />
+	<spacing id="58" a="3" b="8" c="3" />
+	<char id="34" x="396" y="427" width="43" height="60" />
+	<spacing id="34" a="3" b="15" c="3" />
+	<char id="39" x="440" y="427" width="43" height="60" />
+	<spacing id="39" a="3" b="6" c="2" />
+</font>

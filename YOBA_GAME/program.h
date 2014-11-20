@@ -11,6 +11,7 @@ extern GLuint Program;
 extern GLuint depth_program;
 extern GLuint quad_program;
 extern GLuint line_program;
+extern GLuint text_program;
 
 extern GLint use_tex_loc;
 

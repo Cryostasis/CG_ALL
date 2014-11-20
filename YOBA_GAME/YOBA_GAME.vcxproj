@@ -14,6 +14,7 @@
     <ClInclude Include="camera.h" />
     <ClInclude Include="error_log.h" />
     <ClInclude Include="files.h" />
+    <ClInclude Include="fonts.h" />
     <ClInclude Include="glerrors.h" />
     <ClInclude Include="light.h" />
     <ClInclude Include="loadObject.h" />
@@ -21,12 +22,15 @@
     <ClInclude Include="physics.h" />
     <ClInclude Include="program.h" />
     <ClInclude Include="textures.h" />
+    <ClInclude Include="tinyXML\tinystr.h" />
+    <ClInclude Include="tinyXML\tinyxml.h" />
     <ClInclude Include="winfuncs.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="camera.cpp" />
     <ClCompile Include="error_log.cpp" />
     <ClCompile Include="files.cpp" />
+    <ClCompile Include="fonts.cpp" />
     <ClCompile Include="glerrors.cpp" />
     <ClCompile Include="light.cpp" />
     <ClCompile Include="loadObject.cpp" />
@@ -35,25 +39,31 @@
     <ClCompile Include="physics.cpp" />
     <ClCompile Include="program.cpp" />
     <ClCompile Include="textures.cpp" />
+    <ClCompile Include="tinyXML\tinystr.cpp" />
+    <ClCompile Include="tinyXML\tinyxml.cpp" />
+    <ClCompile Include="tinyXML\tinyxmlerror.cpp" />
+    <ClCompile Include="tinyXML\tinyxmlparser.cpp" />
     <ClCompile Include="winfuncs.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="shaders\fs1.sh" />
-    <None Include="shaders\fs2.sh" />
-    <None Include="shaders\fs3.sh" />
-    <None Include="shaders\fs4.sh" />
-    <None Include="shaders\fs5.sh" />
-    <None Include="shaders\line_f.sh" />
-    <None Include="shaders\line_v.sh" />
-    <None Include="shaders\quad_f.sh" />
-    <None Include="shaders\quad_v.sh" />
-    <None Include="shaders\shad_f.sh" />
-    <None Include="shaders\shad_v.sh" />
-    <None Include="shaders\vs1.sh" />
-    <None Include="shaders\vs2.sh" />
-    <None Include="shaders\vs3.sh" />
-    <None Include="shaders\vs4.sh" />
-    <None Include="shaders\vs5.sh" />
+    <None Include="shaders\fs1.glsl" />
+    <None Include="shaders\fs2.glsl" />
+    <None Include="shaders\fs3.glsl" />
+    <None Include="shaders\fs4.glsl" />
+    <None Include="shaders\fs5.glsl" />
+    <None Include="shaders\line_f.glsl" />
+    <None Include="shaders\line_v.glsl" />
+    <None Include="shaders\quad_f.glsl" />
+    <None Include="shaders\quad_v.glsl" />
+    <None Include="shaders\shad_f.glsl" />
+    <None Include="shaders\shad_v.glsl" />
+    <None Include="shaders\text_f.glsl" />
+    <None Include="shaders\text_v.glsl" />
+    <None Include="shaders\vs1.glsl" />
+    <None Include="shaders\vs2.glsl" />
+    <None Include="shaders\vs3.glsl" />
+    <None Include="shaders\vs4.glsl" />
+    <None Include="shaders\vs5.glsl" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{17955FD1-0E8E-41E9-B3E8-578B7081EE81}</ProjectGuid>
