@@ -306,7 +306,7 @@ void init_scene()
 	mesh_create_from_file("objects/cone.obj", meshes[6], s_data.position[0] + vec3(0, 0.5, 0), 0.2, maters[1], cone_tex);
 	meshes[6].rotate(0.0, 0.0, -M_PI / 2);
 
-	mesh_create_from_file("objects/flat.obj", meshes[7], vec3(0, -3, 0), 10, maters[0], 2);
+	mesh_create_from_file("objects/flat.obj", meshes[7], vec3(0, -3, 0), 10, maters[2], 3);
 	
 	if (USE_MASSIVE_MODELS)
 	{
@@ -563,8 +563,6 @@ int init_glew()
 int init()
 {
 	setlocale(LC_ALL, "Russian");
-	//init_vec_err_stream();
-    //init_mat_err_stream();
 
 	int k;
 	glutInit(&k, 0);
@@ -601,9 +599,6 @@ int init()
 	glutMouseFunc(on_mouse_click);
 
 	glutSetKeyRepeat(GLUT_KEY_REPEAT_OFF);
-
-	//print_errors(vec_get_e_stream());
-	//print_errors(mat_get_e_stream());
 
 	return ST_OK;
 }
@@ -672,14 +667,12 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	wglSwapIntervalEXT_Func wglSwapIntervalEXT = wglSwapIntervalEXT_Func(wglGetProcAddress("wglSwapIntervalEXT"));
 	if (wglSwapIntervalEXT) 
 		wglSwapIntervalEXT(VSYNC);
-
+		
 	active_font("font");
 
 	load_screen_off();
 	glut_window = glutGetWindow();
 	glutShowWindow();
-	//glutPushWindow();
-	//glutSetWindow(i);
 
 	ShowCursor(0);
 	glutMainLoop();
