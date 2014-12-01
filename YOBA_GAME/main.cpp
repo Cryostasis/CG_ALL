@@ -37,6 +37,7 @@ using namespace std;
 
 #define MAX_BULLETS 100
 #define USE_MASSIVE_MODELS 1
+#define VSYNC true
 
 int window[2] = { 1280, 720 };
 int wind_pos[2] = { 70, 0 };
@@ -233,19 +234,22 @@ void render(GLuint program, camera_t &camera)
 				bullets[i].render_pol_mesh(line_program, camera);
 	}
 
-	glUseProgram(text_program);
-	render_text();
-
+	if (Program == program)
+	{
+		glUseProgram(text_program);
+		render_text();
+	}
 	check_GL_error();
 
-	if (Program == program) glutSwapBuffers();
+	if (Program == program) 
+		glutSwapBuffers();
 }
 
 void render_scene()
 {
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	glEnable(GL_DEPTH_TEST);
-	glEnable(GL_BLEND);
+	//glEnable(GL_BLEND);
 	glViewport(0, 0, window[0], window[1]);
 	glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -257,8 +261,8 @@ void render_scene()
 void render_shadows(GLuint FBO, camera_t & camera)
 {
 	glBindFramebuffer(GL_FRAMEBUFFER, FBO);
-	glDisable(GL_DEPTH_TEST);
-	glDisable(GL_BLEND);
+	//glDisable(GL_DEPTH_TEST);
+	//glDisable(GL_BLEND);
 	glViewport(0, 0, window[0] * shad_size, window[1] * shad_size);
 	glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE);
 	glDepthMask(GL_TRUE);
@@ -302,7 +306,7 @@ void init_scene()
 	mesh_create_from_file("objects/cone.obj", meshes[6], s_data.position[0] + vec3(0, 0.5, 0), 0.2, maters[1], cone_tex);
 	meshes[6].rotate(0.0, 0.0, -M_PI / 2);
 
-	mesh_create_from_file("objects/flat.obj", meshes[7], vec3(0, -3, 0), 10, maters[0], flat_tex);
+	mesh_create_from_file("objects/flat.obj", meshes[7], vec3(0, -3, 0), 10, maters[0], 2);
 	
 	if (USE_MASSIVE_MODELS)
 	{
@@ -642,6 +646,8 @@ void init_framebuffer()
 	}
 }
 
+typedef BOOL(APIENTRY * wglSwapIntervalEXT_Func)(int);
+
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {	
 	CreateConsole();
@@ -663,15 +669,12 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	
 	cout << (unsigned char*)glGetString(GL_VENDOR) << endl << (unsigned char*)glGetString(GL_RENDERER) << endl;
 
-<<<<<<< HEAD
 	wglSwapIntervalEXT_Func wglSwapIntervalEXT = wglSwapIntervalEXT_Func(wglGetProcAddress("wglSwapIntervalEXT"));
 	if (wglSwapIntervalEXT) 
 		wglSwapIntervalEXT(VSYNC);
 
 	active_font("font");
 
-=======
->>>>>>> parent of dbb6ef1... Added vsync
 	load_screen_off();
 	glut_window = glutGetWindow();
 	glutShowWindow();

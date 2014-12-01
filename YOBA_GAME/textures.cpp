@@ -90,7 +90,6 @@ GLuint texture_create_depth(GLsizei width, GLsizei height)
 
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT24, width, height, 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL);
 	
-	
 	if (check_GL_error())
 		return ST_TEXTURE_ERROR;
 
