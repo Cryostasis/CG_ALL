@@ -35,9 +35,8 @@
 
 using namespace std;
 
-#define MAX_BULLETS			100
-#define USE_MASSIVE_MODELS	1
-#define VSYNC				1
+#define MAX_BULLETS 100
+#define USE_MASSIVE_MODELS 1
 
 int window[2] = { 1280, 720 };
 int wind_pos[2] = { 70, 0 };
@@ -643,8 +642,6 @@ void init_framebuffer()
 	}
 }
 
-typedef BOOL(APIENTRY * wglSwapIntervalEXT_Func)(int);
-
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {	
 	CreateConsole();
@@ -666,15 +663,20 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	
 	cout << (unsigned char*)glGetString(GL_VENDOR) << endl << (unsigned char*)glGetString(GL_RENDERER) << endl;
 
+<<<<<<< HEAD
 	wglSwapIntervalEXT_Func wglSwapIntervalEXT = wglSwapIntervalEXT_Func(wglGetProcAddress("wglSwapIntervalEXT"));
 	if (wglSwapIntervalEXT) 
 		wglSwapIntervalEXT(VSYNC);
 
 	active_font("font");
 
+=======
+>>>>>>> parent of dbb6ef1... Added vsync
 	load_screen_off();
 	glut_window = glutGetWindow();
 	glutShowWindow();
+	//glutPushWindow();
+	//glutSetWindow(i);
 
 	ShowCursor(0);
 	glutMainLoop();
