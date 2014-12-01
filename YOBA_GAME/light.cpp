@@ -79,7 +79,7 @@ void s_light_t::add(vec4 pos, vec4 dir, vec4 amb, vec4 diff, vec4 spec, vec3 att
 	exponent.push_back(exp);
 
 	camera.push_back(camera_t());
-	camera[cnt - 1].look_at(position[cnt - 1], position[cnt - 1] - direction[cnt - 1], vec3_y);
+	camera[cnt - 1].look_at(position[cnt - 1], position[cnt - 1] + direction[cnt - 1], vec3_y);
 	camera[cnt - 1].calc_perspective(acosf(cutoff[cnt - 1]) * 180.0 / M_PI, 1.0, 0.05, 20.0);
 
 	mat.push_back(camera[cnt - 1].get_light_matrix());

@@ -48,7 +48,7 @@ GLuint get_texture_from_tga(char *name)
 		delete[] buffer;
 		return 0;
 	}
-	
+
 	format = (header->bitperpel == 24 ? GL_BGR : GL_BGRA);
 	internalFormat = (format == GL_BGR ? GL_RGB8 : GL_RGBA8);
 
@@ -61,17 +61,22 @@ GLuint get_texture_from_tga(char *name)
 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+<<<<<<< HEAD
 	//glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, header->width, header->height, 0, format,
 	//	GL_UNSIGNED_BYTE, (const GLvoid*)(buffer + sizeof(TGAHeader)+header->idlength));
 
 	gluBuild2DMipmaps(GL_TEXTURE_2D, internalFormat, header->width, header->height, format,
+=======
+
+	glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, header->width, header->height, 0, format,
+>>>>>>> parent of 551be9f... Minor changes
 		GL_UNSIGNED_BYTE, (const GLvoid*)(buffer + sizeof(TGAHeader)+header->idlength));
 
 	delete[] buffer;
 	delete[] buf;
 
 	if (check_GL_error())
-		raise_error("Texture init error", true, true);
+		return ST_TEXTURE_INIT_ERROR;
 	return texture;
 }
 

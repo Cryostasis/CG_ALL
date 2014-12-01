@@ -458,7 +458,7 @@ void timer(int i)
 
 	char *buf = new char[5];
 	sprintf(buf, "%d", frames.size());
-	prepare_text(window[0], window[1], 0, 0, buf, vec4(1.0, 1.0, 1.0, 1.0), aspect, 20);
+	prepare_text(window[0], window[1], 0, 0, buf, vec4(1.0, 1.0, 1.0, 1.0), aspect, 12);
 
 	frames.push(new_ticks);
 	last_ticks = new_ticks;
