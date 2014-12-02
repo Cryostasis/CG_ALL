@@ -12,7 +12,7 @@
 class light_t
 {
 public:
-	virtual void add(vec4 amb, vec4 diff, vec4 spec, int window[2], int shad_size);
+	virtual void add(vec4 amb, vec4 diff, vec4 spec, int window[2], int shad_size, bool cubemap);
 	std::vector<vec4> ambient;
 	std::vector<vec4> diffuse;
 	std::vector<vec4> specular;

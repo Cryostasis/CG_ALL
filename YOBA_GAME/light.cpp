@@ -18,13 +18,16 @@ material_t *materials;
 
 int material_cnt;
 
-void light_t::add(vec4 amb, vec4 diff, vec4 spec, int window[2], int shad_size)
+void light_t::add(vec4 amb, vec4 diff, vec4 spec, int window[2], int shad_size, bool cubemap)
 {
 	cnt++;
 	ambient.push_back(amb);
 	diffuse.push_back(diff);
 	specular.push_back(spec);
-	depth_tex.push_back(texture_create_depth(window[0] * shad_size, window[1] * shad_size));
+	if (!cubemap)
+		depth_tex.push_back(texture_create_depth(window[0] * shad_size, window[1] * shad_size));
+	else
+		depth_tex.push_back(texture_create_cubemap(window[0] * shad_size));
 	depthFBO.push_back(-1);
 
 	GLenum fboStatus;
@@ -47,7 +50,7 @@ void light_t::add(vec4 amb, vec4 diff, vec4 spec, int window[2], int shad_size)
 
 void p_light_t::add(vec4 pos, vec4 amb, vec4 diff, vec4 spec, vec3 att, int window[2], int shad_size)
 {
-	light_t::add(amb, diff, spec, window, shad_size);
+	light_t::add(amb, diff, spec, window, shad_size, true);
 	position.push_back(pos);
 	attenuation.push_back(vec4(att));
 
@@ -60,7 +63,7 @@ void p_light_t::add(vec4 pos, vec4 amb, vec4 diff, vec4 spec, vec3 att, int wind
 
 void d_light_t::add(vec4 pos, vec4 amb, vec4 diff, vec4 spec, int window[2], int shad_size)
 {
-	light_t::add(amb, diff, spec, window, shad_size);
+	light_t::add(amb, diff, spec, window, shad_size, false);
 	direction.push_back(pos);
 
 	camera.push_back(camera_t());

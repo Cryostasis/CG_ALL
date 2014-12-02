@@ -13,7 +13,7 @@ layout(location = USE_TEX) uniform int use_tex;
 
 uniform sampler2D pLight_depth_tex;
 uniform sampler2D dLight_depth_tex;
-uniform sampler2D sLight_depth_tex;
+uniform samplerCubeShadow sLight_depth_tex;
 
 //uniform sampler2DArrayShadow    pLight_depth_tex;
 //uniform sampler2DArrayShadow    dLight_depth_tex;
@@ -126,9 +126,9 @@ void main(void)
 	}
 	for (int i = 0; i < sLight_num; i++)
 	{
-		if (texture(sLight_depth_tex, (Vert.sSmcoord[i].xy / Vert.sSmcoord[i].w) ).z  
+		/*if (texture(sLight_depth_tex, (Vert.sSmcoord[i].xy / Vert.sSmcoord[i].w) ).z  
 			<  (Vert.sSmcoord[i].z - bias) / Vert.sSmcoord[i].w )
-			continue;
+			continue;*/
 
 		vec3 lightDir = normalize(Vert.sLightDir[i]);
 

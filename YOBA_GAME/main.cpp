@@ -41,7 +41,7 @@ using namespace std;
 
 int window[2] = { 1280, 720 };
 int wind_pos[2] = { 70, 0 };
-int shad_size = 6;
+int shad_size = 4;
 
 long long last_ticks;
 queue<long long> frames;
@@ -276,12 +276,12 @@ void render_all()
 {
 	//for (int i = 0; i < p_data.cnt; i++)
 	//	render_shadows(p_data.depthFBO[i], p_data.camera[i]);
-	for (int i = 0; i < d_data.cnt; i++)
+	/*for (int i = 0; i < d_data.cnt; i++)
 		render_shadows(d_data.depthFBO[i], d_data.camera[i]);
-	for (int i = 0; i < s_data.cnt; i++)
-		render_shadows(s_data.depthFBO[i], s_data.camera[i]);
+	//for (int i = 0; i < s_data.cnt; i++)
+	//	render_shadows(s_data.depthFBO[i], s_data.camera[i]);
 	
-	render_scene();
+	render_scene();*/
 }
 
 void init_scene()
