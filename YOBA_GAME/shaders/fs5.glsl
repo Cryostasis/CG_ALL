@@ -126,10 +126,9 @@ void main(void)
 	}
 	for (int i = 0; i < sLight_num; i++)
 	{
-		//shadow += textureProj(sLight_depth_tex, Vert.sSmcoord[i]);
-		//if (texture(sLight_depth_tex, (Vert.sSmcoord[i].xy / Vert.sSmcoord[i].w) ).z  
-		//	<  (Vert.sSmcoord[i].z - bias) / Vert.sSmcoord[i].w )
-		//	continue;
+		if (texture(sLight_depth_tex, (Vert.sSmcoord[i].xy / Vert.sSmcoord[i].w) ).z  
+			<  (Vert.sSmcoord[i].z - bias) / Vert.sSmcoord[i].w )
+			continue;
 
 		vec3 lightDir = normalize(Vert.sLightDir[i]);
 

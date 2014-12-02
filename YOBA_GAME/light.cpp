@@ -4,6 +4,7 @@
 #include "textures.h"
 #include "error_log.h"
 #include "camera.h"
+#include "program.h"
 
 #include <GL/glew.h>
 #include <GL/freeglut.h>
@@ -71,10 +72,10 @@ void d_light_t::add(vec4 pos, vec4 amb, vec4 diff, vec4 spec, int window[2], int
 
 void s_light_t::add(vec4 pos, vec4 dir, vec4 amb, vec4 diff, vec4 spec, vec3 att, GLfloat cut, GLfloat exp, int window[2], int shad_size)
 {
-	light_t::add(amb, diff, spec, window, shad_size);
+	p_light_t::add(pos, amb, diff, spec, att, window, shad_size);
 	direction.push_back(dir);
-	position.push_back(pos);
-	attenuation.push_back(vec4(att));
+	//position.push_back(pos);
+	//attenuation.push_back(vec4(att));
 	cutoff.push_back(cut);
 	exponent.push_back(exp);
 
@@ -313,7 +314,7 @@ void setup_lights(GLuint program)
 
 void material_setup(GLuint program, int material)
 {
-	if (program == 3)
+	if (program == Program)
 	{
 		glUniform4fv(material_locs.ambient_loc, 1, materials[material].ambient.v);
 		glUniform4fv(material_locs.diffuse_loc, 1, materials[material].diffuse.v);

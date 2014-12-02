@@ -366,12 +366,14 @@ void init_lighting()
 		vec4(1.0f, 1.0f, 1.0f, 1.0f),
 		vec3(0.5f, 0.0f, 0.02f), 
 		window, shad_size);
+
 	d_data.add(
 		vec4(-1.0f, 1.0f, 0.0f, 0.0f),
 		vec4(0.1f, 0.1f, 0.1f, 1.0f),
 		vec4(1.0f, 1.0f, 1.0f, 1.0f),
 		vec4(1.0f, 1.0f, 1.0f, 1.0f),
 		window, shad_size);
+	
 	s_data.add(
 		vec4(3.0f, 2.5f, 2.0f, 1.0f),
 		vec4(-1.0f, 0.0f, 0.0f, 1.0f),
@@ -380,13 +382,6 @@ void init_lighting()
 		vec4(1.0f, 1.0f, 1.0f, 1.0f),
 		vec3(0.5f, 0.0f, 0.02f), cosf(22.5 / 180.0 * M_PI), 25.0f,
 		window, shad_size);
-	/*s_data.add(
-		vec4(3.0f, 2.0f, 2.0f, 1.0f),
-		vec4(-1.0f, 0.0f, 0.0f, 1.0f),
-		vec4(0.1f, 0.1f, 0.1f, 1.0f),
-		vec4(1.0f, 1.0f, 1.0f, 1.0f),
-		vec4(1.0f, 1.0f, 1.0f, 1.0f),
-		vec3(0.5f, 0.0f, 0.02f), cosf(45.0 / 360.0 * M_PI), 25.0f);*/
 
 	maters[0] = material_create(
 		vec4(0.2f, 0.2f, 0.2f, 1.0f),
