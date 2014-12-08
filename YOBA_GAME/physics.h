@@ -1,6 +1,8 @@
 #ifndef _PHYSICS_H_INC_
 #define _PHYSICS_H_INC_
 
+#include "disable_warnings.h"
+
 #include "math/math3d.h"
 #include "math/mathgl.h"
 #include "mesh.h"

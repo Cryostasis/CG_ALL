@@ -1,6 +1,8 @@
 #ifndef _LIGHT_H_INC_
 #define _LIGHT_H_INC_
 
+#include "disable_warnings.h"
+
 #include "math/math3d.h"
 #include "math/mathgl.h"
 #include "camera.h"
@@ -12,7 +14,8 @@
 class light_t
 {
 public:
-	virtual void add(vec4 amb, vec4 diff, vec4 spec, int window[2], int shad_size, bool cubemap);
+	virtual void add(vec4 amb, vec4 diff, vec4 spec, int window[2], int shad_size);
+
 	std::vector<vec4> ambient;
 	std::vector<vec4> diffuse;
 	std::vector<vec4> specular;
@@ -28,7 +31,11 @@ class p_light_t : public light_t
 {
 public:
 	virtual void add(vec4 pos, vec4 amb, vec4 diff, vec4 spec, vec3 att, int window[2], int shad_size);
+	virtual void init_cubemap(GLuint sz);
+	virtual void p_light_t::bind_to_face(int ind, int face);
 	void setup(GLuint program);
+
+	std::vector<GLuint> cubemap;
 	std::vector<vec4> position;
 	std::vector<vec4> attenuation;
 };

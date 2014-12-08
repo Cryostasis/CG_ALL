@@ -142,8 +142,6 @@ void load_object(g_object *obj, char *file)
 		fscanf(F, "%s", s);
 		if (!strcmp(s, "v"))
 		{
-			GLfloat buf;
-			double dbuf;
 			for (int i = 0; i < 3; i++)
 			{
 				//ifs >> buf;
@@ -153,7 +151,6 @@ void load_object(g_object *obj, char *file)
 		}
 		else if (!strcmp(s, "vt"))
 		{
-			GLfloat buf;
 			for (int i = 0; i < 2; i++)
 			{
 				//ifs >> buf;
@@ -163,7 +160,6 @@ void load_object(g_object *obj, char *file)
 		}
 		else if (!strcmp(s, "vn"))
 		{
-			GLfloat buf;
 			for (int i = 0; i < 3; i++)
 			{
 				//ifs >> buf;
@@ -215,7 +211,7 @@ void load_object(g_object *obj, char *file)
 	obj->ind_num = obj->indicies.size();
 	obj->file = file;
 	
-	for (i = 0; i < obj->ind_num; i++)
+	for (int i = 0; i < obj->ind_num; i++)
 	{
 		obj->N_verts.push_back(obj->verts[i * 3]);
 		obj->N_verts.push_back(obj->verts[i * 3 + 1]);
@@ -229,7 +225,7 @@ void load_object(g_object *obj, char *file)
 		obj->N_indicies.push_back(i * 2 + 1);
 	}
 
-	for (i = 0; i < obj->vert_num / 3; i++)
+	for (int i = 0; i < obj->vert_num / 3; i++)
 	{
 		obj->P_verts.push_back(obj->verts[i * 9	   ]);
 		obj->P_verts.push_back(obj->verts[i * 9 + 1]);

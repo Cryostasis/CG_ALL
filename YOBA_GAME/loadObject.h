@@ -1,6 +1,8 @@
 #ifndef _LOADOBJECT_H_INC_
 #define _LOADOBJECT_H_INC_
 
+#include "disable_warnings.h"
+
 #define LOAD_BIN 1
 
 #define BIN_FORMAT_VER 1

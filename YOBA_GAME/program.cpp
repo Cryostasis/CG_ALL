@@ -18,6 +18,7 @@ GLuint normals_program;
 GLuint quad_program;
 GLuint line_program;
 GLuint text_program;
+GLuint cube_depth_program;
 
 GLint use_tex_loc;
 
@@ -121,14 +122,14 @@ int init_shaders(char *p_v, char* p_f, GLuint &prog)
 	vs = glCreateShader(GL_VERTEX_SHADER);
 	glShaderSource(vs, 1, &vs_code, NULL);
 	glCompileShader(vs);
-	int err = check_shader(vs, "vs");
+	int err = check_shader(vs, p_v);
 	if (err)
 		return err;
 
 	fs = glCreateShader(GL_FRAGMENT_SHADER);
 	glShaderSource(fs, 1, &fs_code, NULL);
 	glCompileShader(fs);
-	err = check_shader(fs, "fs");
+	err = check_shader(fs, p_f);
 	if (err)
 		return err;
 
@@ -170,6 +171,10 @@ int init_programs()
 	get_unif_loc(&transform_locs.viewPosition, Program, "transform.viewPosition");
 
 	err = init_shaders("shaders/shad_v.glsl", "shaders/shad_f.glsl", depth_program);
+	if (err)
+		return err;
+
+	err = init_shaders("shaders/shad_cube_v.glsl", "shaders/shad_cube_f.glsl", cube_depth_program);
 	if (err)
 		return err;
 

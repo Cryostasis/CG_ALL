@@ -1,6 +1,8 @@
 #ifndef _FONTS_H_INC
 #define _FONTS_H_INC
 
+#include "disable_warnings.h"
+
 #include "math/math3d.h"
 #include "math/mathgl.h"
 

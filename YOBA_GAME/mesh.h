@@ -1,6 +1,8 @@
 #ifndef _GRAPHOBJ_H_INC_
 #define _GRAPHOBJ_H_INC_
 
+#include "disable_warnings.h"
+
 #define VERT_POSITION	0
 #define VERT_TEXCOORD	1
 #define VERT_NORMAL		2

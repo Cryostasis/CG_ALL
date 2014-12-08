@@ -121,7 +121,7 @@ void render_text()
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, font_tex);
 	glUniform1i(FONT_TEX, 0);
-	for (int i = 0; i < font_mesh.size(); i++)
+	for (size_t i = 0; i < font_mesh.size(); i++)
 		font_mesh[i].render(text_program, font_camera);
 	glEnable(GL_DEPTH_TEST);
 }

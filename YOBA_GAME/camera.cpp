@@ -108,4 +108,6 @@ void camera_t::setup(GLuint program, const mat4 &model)
 
 	GLuint loc = glGetUniformLocation(program, "transform.modelViewProjection");
 	glUniformMatrix4fv(loc, 1, GL_TRUE, modelViewProjection.m);
+	loc = glGetUniformLocation(program, "transform.modelView");
+	glUniformMatrix4fv(loc, 1, GL_TRUE, model.m);
 }

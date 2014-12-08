@@ -12,6 +12,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="camera.h" />
+    <ClInclude Include="disable_warnings.h" />
     <ClInclude Include="error_log.h" />
     <ClInclude Include="files.h" />
     <ClInclude Include="fonts.h" />
@@ -55,6 +56,8 @@
     <None Include="shaders\line_v.glsl" />
     <None Include="shaders\quad_f.glsl" />
     <None Include="shaders\quad_v.glsl" />
+    <None Include="shaders\shad_cube_f.glsl" />
+    <None Include="shaders\shad_cube_v.glsl" />
     <None Include="shaders\shad_f.glsl" />
     <None Include="shaders\shad_v.glsl" />
     <None Include="shaders\text_f.glsl" />

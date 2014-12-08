@@ -1,3 +1,4 @@
+#include "glerrors.h"
 #include "error_log.h"
 
 #include <GL/glew.h>

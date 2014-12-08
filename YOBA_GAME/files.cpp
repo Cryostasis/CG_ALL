@@ -1,4 +1,5 @@
 #include "error_log.h"
+#include "files.h"
 
 #include <stdio.h>
 #include <stdlib.h>

@@ -6,6 +6,8 @@
 //#define GLEW_STATIC
 #define _USE_MATH_DEFINES
 
+#include "disable_warnings.h"
+
 #include <GL/glew.h>
 #include <GL/freeglut.h>
 
@@ -27,6 +29,7 @@
 #include <stdlib.h>
 #include <string>
 #include <queue>
+#include <set>
 #include <iostream>
 #include <fstream>
 #include <cmath>
@@ -41,7 +44,7 @@ using namespace std;
 
 int window[2] = { 1280, 720 };
 int wind_pos[2] = { 70, 0 };
-int shad_size = 4;
+int shad_size = 6;
 
 long long last_ticks;
 queue<long long> frames;
@@ -69,6 +72,8 @@ int light, maters[10] = { -1 };
 mesh_t		*meshes;
 mesh_t		*targets;
 bullet_t	bullets[MAX_BULLETS];
+set<int>	light_meshes;
+
 
 camera_t mainCamera;
 
@@ -154,7 +159,7 @@ void scene_tact()
 		meshes[i].rotate_around_y_central(p_data.position[0], diff_angle, diff_angle);
 }
 
-void activate_tex(GLuint unit, GLuint tex, char *unif_name)
+void activate_tex(GLuint unit, GLuint tex, char *unif_name, GLenum type)
 {
 	glActiveTexture(GL_TEXTURE0 + unit);
 	glBindTexture(GL_TEXTURE_2D, tex);
@@ -168,13 +173,13 @@ void render(GLuint program, camera_t &camera)
 
 	if (Program == program)
 	{
-		activate_tex(1, p_data.depth_tex[0], "pLight_depth_tex");
-		activate_tex(2, d_data.depth_tex[0], "dLight_depth_tex");
-		activate_tex(3, s_data.depth_tex[0], "sLight_depth_tex");
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_MODE, GL_COMPARE_REF_TO_TEXTURE);
+		activate_tex(1, p_data.depth_tex[0], "pLight_depth_tex", GL_TEXTURE_CUBE_MAP);
+		activate_tex(2, d_data.depth_tex[0], "dLight_depth_tex", GL_TEXTURE_2D);
+		activate_tex(3, s_data.depth_tex[0], "sLight_depth_tex", GL_TEXTURE_2D);
 
 		setup_lights(program);
 	}
+
 	if (flag_render_objects)
 	{
 		for (int i = 0; i < mesh_num; i++)
@@ -182,9 +187,13 @@ void render(GLuint program, camera_t &camera)
 			if (!use_massive && USE_MASSIVE_MODELS && i == mesh_num - 8)
 				break;
 			if (meshes[i].visible)
+			{
+				if (Program != program && light_meshes.count(i) != 0)
+					continue;
 				meshes[i].render(program, camera);
+			}
 		}
-
+		
 		for (int i = 0; i < targ_num; i++)
 			if (targets[i].visible)
 				targets[i].render(program, camera);
@@ -233,14 +242,14 @@ void render(GLuint program, camera_t &camera)
 			if (bullets[i].visible)
 				bullets[i].render_pol_mesh(line_program, camera);
 	}
-
+	
 	if (Program == program)
 	{
 		glUseProgram(text_program);
 		render_text();
 	}
 	check_GL_error();
-
+	
 	if (Program == program) 
 		glutSwapBuffers();
 }
@@ -258,7 +267,7 @@ void render_scene()
 	render(Program, mainCamera);
 }
 
-void render_shadows(GLuint FBO, camera_t & camera)
+void render_shadows(GLuint program, GLuint FBO, camera_t & camera)
 {
 	glBindFramebuffer(GL_FRAMEBUFFER, FBO);
 	//glDisable(GL_DEPTH_TEST);
@@ -269,24 +278,30 @@ void render_shadows(GLuint FBO, camera_t & camera)
 	glClear(GL_DEPTH_BUFFER_BIT);
 	glCullFace(GL_FRONT);
 
-	render(depth_program, camera);
+	render(program, camera);
 }
 
 void render_all()
 {
-	//for (int i = 0; i < p_data.cnt; i++)
-	//	render_shadows(p_data.depthFBO[i], p_data.camera[i]);
-	/*for (int i = 0; i < d_data.cnt; i++)
-		render_shadows(d_data.depthFBO[i], d_data.camera[i]);
-	//for (int i = 0; i < s_data.cnt; i++)
-	//	render_shadows(s_data.depthFBO[i], s_data.camera[i]);
+	for (int i = 0; i < p_data.cnt; i++)
+		for (int j = 0; j < 6; j++)
+		{
+			glUseProgram(cube_depth_program);
+			glUniform3fv(8, 1, vec3(p_data.position[i]).v);
+			p_data.bind_to_face(i, j);
+			render_shadows(cube_depth_program, p_data.depthFBO[i], p_data.camera[i]);
+		}
+	for (int i = 0; i < d_data.cnt; i++)
+		render_shadows(depth_program, d_data.depthFBO[i], d_data.camera[i]);
+	for (int i = 0; i < s_data.cnt; i++)
+		render_shadows(depth_program, s_data.depthFBO[i], s_data.camera[i]);
 	
-	render_scene();*/
+	render_scene();
 }
 
 void init_scene()
 {
-	mainCamera = camera_t(0.0, 1.5, 4.0);
+	mainCamera = camera_t(0.0, 1.5, 7.0);
 	mainCamera.calc_perspective(fov, aspect, znear, zfar);
 
 	mesh_num = 16;
@@ -303,11 +318,15 @@ void init_scene()
 		mesh_create_sphere(meshes[i], vec3(1.0f, 1.5f, 2.0f), 0.2, maters[0], sych_tex);
 		meshes[i].rotate_around_y_central(p_data.position[0], M_PI * 2 * i / 3, M_PI * 2 * i / 3);
 	}
-	mesh_create_from_file("objects/cone.obj", meshes[6], s_data.position[0] + vec3(0, 0.5, 0), 0.2, maters[1], cone_tex);
-	meshes[6].rotate(0.0, 0.0, -M_PI / 2);
+	mesh_create_from_file("objects/cone.obj", meshes[6], s_data.position[0], 0.2, maters[1], cone_tex);
+	meshes[6].rotate(0.0, 0.0, -M_PI / 4);
 
-	mesh_create_from_file("objects/flat.obj", meshes[7], vec3(0, -3, 0), 10, maters[2], 3);
+	mesh_create_from_file("objects/flat.obj", meshes[7], vec3(0, -3, 0), 10, maters[0], blank_tex);
+	//mesh_create_from_file("objects/flat.obj", meshes[7], vec3(0, -3, 0), 10, maters[2], 2);
 	
+	light_meshes.insert(1);
+	light_meshes.insert(6);
+
 	if (USE_MASSIVE_MODELS)
 	{
 		mesh_create_from_file("objects/fw190.obj", meshes[8], vec3(7, 2, 2), 0.3, maters[0], fw190_tex);
@@ -320,7 +339,6 @@ void init_scene()
 		meshes[10].rotate_around_y_central(p_data.position[0], M_PI * 8 / 5, M_PI * 8 / 5 + M_PI);
 		meshes[11].rotate_around_y_central(p_data.position[0], M_PI * 12 / 5, M_PI * 12 / 5 + M_PI);
 		meshes[12].rotate_around_y_central(p_data.position[0], M_PI * 16 / 5, M_PI * 16 / 5 + M_PI);
-
 
 		mesh_create_from_file("objects/is4.obj", meshes[13], vec3(-6, -3, 2), 0.3, maters[0], is4_tex);
 		mesh_create_from_file("objects/is7.obj", meshes[14], vec3(-6, -3, 2), 0.3, maters[0], is7_tex);
@@ -375,13 +393,22 @@ void init_lighting()
 		window, shad_size);
 	
 	s_data.add(
+		vec4(3.0f, 4.0f, 2.0f, 1.0f),
+		vec4(-1.0f, -1.0f, 0.0f, 1.0f),
+		vec4(0.1f, 0.1f, 0.1f, 1.0f),
+		vec4(1.0f, 1.0f, 1.0f, 1.0f),
+		vec4(1.0f, 1.0f, 1.0f, 1.0f),
+		vec3(0.09f, 0.0f, 0.015f), cosf(45.0 / 180.0 * M_PI * 2), 25.0f,
+		window, shad_size);
+
+	/*s_data.add(
 		vec4(3.0f, 2.5f, 2.0f, 1.0f),
 		vec4(-1.0f, 0.0f, 0.0f, 1.0f),
 		vec4(0.1f, 0.1f, 0.1f, 1.0f),
 		vec4(1.0f, 1.0f, 1.0f, 1.0f),
 		vec4(1.0f, 1.0f, 1.0f, 1.0f),
 		vec3(0.5f, 0.0f, 0.02f), cosf(22.5 / 180.0 * M_PI), 25.0f,
-		window, shad_size);
+		window, shad_size);*/
 
 	maters[0] = material_create(
 		vec4(0.2f, 0.2f, 0.2f, 1.0f),
@@ -601,7 +628,6 @@ int init()
 void init_framebuffer()
 {
 	GLuint fbo, tex, depth_rb;
-	GLenum fboStatus;
 
 	glGenTextures(1, &tex);
 	glBindTexture(GL_TEXTURE_2D, tex);
@@ -638,6 +664,13 @@ void init_framebuffer()
 
 typedef BOOL(APIENTRY * wglSwapIntervalEXT_Func)(int);
 
+void set_vsync(bool vs)
+{
+	wglSwapIntervalEXT_Func wglSwapIntervalEXT = wglSwapIntervalEXT_Func(wglGetProcAddress("wglSwapIntervalEXT"));
+	if (wglSwapIntervalEXT)
+		wglSwapIntervalEXT(vs);
+}
+
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {	
 	CreateConsole();
@@ -659,9 +692,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	
 	cout << (unsigned char*)glGetString(GL_VENDOR) << endl << (unsigned char*)glGetString(GL_RENDERER) << endl;
 
-	wglSwapIntervalEXT_Func wglSwapIntervalEXT = wglSwapIntervalEXT_Func(wglGetProcAddress("wglSwapIntervalEXT"));
-	if (wglSwapIntervalEXT) 
-		wglSwapIntervalEXT(VSYNC);
+	set_vsync(VSYNC);
 		
 	active_font("font");
 

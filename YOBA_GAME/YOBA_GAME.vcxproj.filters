@@ -63,6 +63,9 @@
     <ClInclude Include="tinyXML\tinyxml.h">
       <Filter>Header Files\XML</Filter>
     </ClInclude>
+    <ClInclude Include="disable_warnings.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="textures.cpp">
@@ -170,6 +173,12 @@
       <Filter>Shaders</Filter>
     </None>
     <None Include="shaders\text_v.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="shaders\shad_cube_f.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="shaders\shad_cube_v.glsl">
       <Filter>Shaders</Filter>
     </None>
   </ItemGroup>

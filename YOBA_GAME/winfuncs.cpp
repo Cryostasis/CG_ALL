@@ -69,7 +69,7 @@ void snapshot(int windowWidth, int windowHeight)
 
 void DrawBitmap(HDC hdc, int x, int y, HBITMAP hBitmap)
 {
-	HBITMAP hbm, hOldbm;
+	HBITMAP hOldbm;
 	HDC hMemDC;
 	BITMAP bm;
 	POINT ptSize, ptOrg;

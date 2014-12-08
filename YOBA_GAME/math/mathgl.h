@@ -1,6 +1,8 @@
 #ifndef MATHGL_H
 #define MATHGL_H
 
+#include "disable_warnings.h"
+
 #define _USE_MATH_DEFINES
 
 #include "math3d.h"

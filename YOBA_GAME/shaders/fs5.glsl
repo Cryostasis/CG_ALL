@@ -11,9 +11,9 @@
 
 layout(location = USE_TEX) uniform int use_tex;
 
-uniform sampler2D pLight_depth_tex;
+uniform samplerCube pLight_depth_tex;
 uniform sampler2D dLight_depth_tex;
-uniform samplerCubeShadow sLight_depth_tex;
+uniform sampler2D sLight_depth_tex;
 
 //uniform sampler2DArrayShadow    pLight_depth_tex;
 //uniform sampler2DArrayShadow    dLight_depth_tex;
@@ -86,6 +86,26 @@ in Vertex
 
 layout(location = FRAG_OUTPUT0) out vec4 color;
 
+bool calc_cube_shadow(int ind)
+{
+    float SampledDistance = texture(pLight_depth_tex, Vert.pLightDir[ind]).r;
+
+    float Distance = length(Vert.pLightDir[ind]);
+
+	/*if (SampledDistance == 1)
+	{
+		color = vec4(1);
+		return true;
+	}
+	else
+		return false;*/
+
+    if (Distance <= SampledDistance + 0.0005)
+        return false;
+    else
+        return true; 
+} 
+
 void main(void)
 {
 	vec3 normal   = normalize(Vert.normal);
@@ -96,7 +116,9 @@ void main(void)
 
 	for (int i = 0; i < pLight_num; i++)
 	{
-		//shadow += textureProj(pLight_depth_tex, Vert.pSmcoord[i]);
+		if (calc_cube_shadow(i))
+		//	return;
+			continue;
 
 		vec3 lightDir = normalize(Vert.pLightDir[i]);
 		float attenuation = 1.0 / (pLight_attenuation[i].x +
@@ -126,8 +148,12 @@ void main(void)
 	}
 	for (int i = 0; i < sLight_num; i++)
 	{
-		/*if (texture(sLight_depth_tex, (Vert.sSmcoord[i].xy / Vert.sSmcoord[i].w) ).z  
+		if (texture(sLight_depth_tex, (Vert.sSmcoord[i].xy / Vert.sSmcoord[i].w) ).z  
 			<  (Vert.sSmcoord[i].z - bias) / Vert.sSmcoord[i].w )
+			continue;
+
+		/*if (textureProj(sLight_depth_tex, Vert.sSmcoord[i].xyw).z  <
+			(Vert.sSmcoord[i].z - bias) / Vert.sSmcoord[i].w)
 			continue;*/
 
 		vec3 lightDir = normalize(Vert.sLightDir[i]);

@@ -9,6 +9,7 @@ int init_programs();
 
 extern GLuint Program;
 extern GLuint depth_program;
+extern GLuint cube_depth_program;
 extern GLuint quad_program;
 extern GLuint line_program;
 extern GLuint text_program;

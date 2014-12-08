@@ -16,25 +16,35 @@ s_light_t s_data;
 material_loc_t material_locs;
 material_t *materials;
 
+struct CameraDirection
+{
+	GLenum face;
+	vec3 target;
+	vec3 up;
+};
+
+CameraDirection gCameraDirections[6] =
+{
+	{ GL_TEXTURE_CUBE_MAP_POSITIVE_X, vec3(1.0f, 0.0f, 0.0f),	vec3(0.0f, -1.0f, 0.0f) },
+	{ GL_TEXTURE_CUBE_MAP_NEGATIVE_X, vec3(-1.0f, 0.0f, 0.0f),	vec3(0.0f, -1.0f, 0.0f) },
+	{ GL_TEXTURE_CUBE_MAP_POSITIVE_Y, vec3(0.0f, 1.0f, 0.0f),	vec3(0.0f, 0.0f, -1.0f) },
+	{ GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, vec3(0.0f, -1.0f, 0.0f),	vec3(0.0f, 0.0f, 1.0f)  },
+	{ GL_TEXTURE_CUBE_MAP_POSITIVE_Z, vec3(0.0f, 0.0f, 1.0f),	vec3(0.0f, -1.0f, 0.0f) },
+	{ GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, vec3(0.0f, 0.0f, -1.0f),	vec3(0.0f, -1.0f, 0.0f) }
+};
+
 int material_cnt;
 
-void light_t::add(vec4 amb, vec4 diff, vec4 spec, int window[2], int shad_size, bool cubemap)
+void light_t::add(vec4 amb, vec4 diff, vec4 spec, int window[2], int shad_size)
 {
 	cnt++;
 	ambient.push_back(amb);
 	diffuse.push_back(diff);
 	specular.push_back(spec);
-	if (!cubemap)
-		depth_tex.push_back(texture_create_depth(window[0] * shad_size, window[1] * shad_size));
-	else
-		depth_tex.push_back(texture_create_cubemap(window[0] * shad_size));
+	depth_tex.push_back(texture_create_depth(window[0] * shad_size, window[1] * shad_size));
 	depthFBO.push_back(-1);
 
 	GLenum fboStatus;
-
-	//glGenFramebuffersEXT(1, &depthFBO[cnt - 1]);
-	//glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, depthFBO[cnt - 1]);
-	//glFramebufferTexture2DEXT(GL_FRAMEBUFFER_EXT, GL_DEPTH_ATTACHMENT_EXT, GL_TEXTURE_2D, depth_tex[cnt - 1], 0);
 
 	glGenFramebuffers(1, &depthFBO[cnt - 1]);
 	glBindFramebuffer(GL_FRAMEBUFFER, depthFBO[cnt - 1]);
@@ -48,37 +58,64 @@ void light_t::add(vec4 amb, vec4 diff, vec4 spec, int window[2], int shad_size, 
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
+void p_light_t::init_cubemap(GLuint sz)
+{
+	cubemap.push_back(0);
+
+	glGenTextures(1, &cubemap[cnt - 1]);
+	glBindTexture(GL_TEXTURE_CUBE_MAP, cubemap[cnt - 1]);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+
+	for (GLuint i = 0; i < 6; i++)
+		glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_R32F, sz, sz, 0, GL_RED, GL_FLOAT, NULL);
+}
+
+void p_light_t::bind_to_face(int ind, int face)
+{
+	camera[ind].look_at(position[ind], position[ind] + gCameraDirections[face].target, gCameraDirections[face].up);
+
+	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, depthFBO[cnt - 1]);
+	glFramebufferTexture2D(GL_DRAW_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, gCameraDirections[face].face, cubemap[ind], 0);
+	glDrawBuffer(GL_COLOR_ATTACHMENT0);
+}
+
 void p_light_t::add(vec4 pos, vec4 amb, vec4 diff, vec4 spec, vec3 att, int window[2], int shad_size)
 {
-	light_t::add(amb, diff, spec, window, shad_size, true);
+	light_t::add(amb, diff, spec, window, shad_size);
+	init_cubemap(window[0]);
 	position.push_back(pos);
 	attenuation.push_back(vec4(att));
 
 	camera.push_back(camera_t());
 	camera[cnt - 1].move_to(position[cnt - 1]);
-	camera[cnt - 1].calc_perspective(360.0, 16.0 / 9.0, 0.05, 20.0);
+	camera[cnt - 1].calc_perspective(90.0, 1.0, 0.1, 20.0);
 
 	mat.push_back(camera[cnt - 1].get_light_matrix());
 }
 
 void d_light_t::add(vec4 pos, vec4 amb, vec4 diff, vec4 spec, int window[2], int shad_size)
 {
-	light_t::add(amb, diff, spec, window, shad_size, false);
+	light_t::add(amb, diff, spec, window, shad_size);
 	direction.push_back(pos);
 
 	camera.push_back(camera_t());
 	camera[cnt - 1].look_at(direction[cnt - 1], -direction[cnt - 1], vec3_y);
-	camera[cnt - 1].calc_orto(-10.0f, 10.0f, -10.0f, 10.0f, -10.0f, 10.0f);
+	camera[cnt - 1].calc_orto(-15.0f, 15.0f, -15.0f, 15.0f, -15.0f, 15.0f);
 
 	mat.push_back(camera[cnt - 1].get_light_matrix());
 }
 
 void s_light_t::add(vec4 pos, vec4 dir, vec4 amb, vec4 diff, vec4 spec, vec3 att, GLfloat cut, GLfloat exp, int window[2], int shad_size)
 {
-	p_light_t::add(pos, amb, diff, spec, att, window, shad_size);
+	light_t::add(amb, diff, spec, window, shad_size);
+
 	direction.push_back(dir);
-	//position.push_back(pos);
-	//attenuation.push_back(vec4(att));
+	position.push_back(pos);
+	attenuation.push_back(vec4(att));
 	cutoff.push_back(cut);
 	exponent.push_back(exp);
 

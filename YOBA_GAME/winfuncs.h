@@ -1,6 +1,8 @@
 #ifndef _WINFUNCS_H_
 #define _WINFUNCS_H_
 
+#include "disable_warnings.h"
+
 #include <Windows.h>
 
 extern HWND hwnd;
