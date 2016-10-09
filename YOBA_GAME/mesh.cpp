@@ -101,7 +101,6 @@ mat4 mesh_t::get_model_mat()
 
 void mesh_t::render(GLuint program, camera_t &camera)
 {
-
 	camera.setup(program, get_model_mat());
 	material_setup(program, material);
 

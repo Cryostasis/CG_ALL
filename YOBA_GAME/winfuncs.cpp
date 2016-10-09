@@ -170,6 +170,7 @@ bool CreateConsole()
 		::setvbuf(stdout, NULL, _IONBF, 0);
 		*stderr = *(::_fdopen(hCrt, "w"));
 		::setvbuf(stderr, NULL, _IONBF, 0);
+		freopen("CONOUT$", "w", stdout);
 		return TRUE;
 	}
 	return FALSE;
