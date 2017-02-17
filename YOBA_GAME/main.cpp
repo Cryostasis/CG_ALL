@@ -39,7 +39,7 @@
 using namespace std;
 
 #define MAX_BULLETS 100
-#define USE_MASSIVE_MODELS 1
+#define USE_MASSIVE_MODELS 0
 #define VSYNC true
 
 int window[2] = { 1280, 720 };
@@ -84,6 +84,11 @@ int bullet_num;
 GLuint sych_tex;
 GLuint cock_tex;
 GLuint cat_tex;
+
+GLuint brick_tex;
+GLuint brick_n_tex;
+GLuint brick_s_tex;
+
 GLuint blank_tex;
 GLuint Yyoba_tex;
 GLuint Ryoba_tex;
@@ -105,6 +110,11 @@ void reg_texture()
 
 	sych_tex =	get_texture_from_tga("textures/sych.tga");
 	cock_tex =	get_texture_from_tga("textures/cock.tga");
+
+	brick_tex = get_texture_from_tga("textures/brick.tga");
+	brick_n_tex = get_texture_from_tga("textures/brick_n.tga");
+	brick_s_tex = get_texture_from_tga("textures/brick_s.tga");
+
 	cat_tex =	get_texture_from_tga("textures/cat.tga");
 	blank_tex = get_texture_from_tga("textures/blank.tga");
 	Yyoba_tex = get_texture_from_tga("textures/Yyoba.tga");
@@ -311,7 +321,7 @@ void init_scene()
 
 	mesh_create_from_file("objects/fig1.obj", meshes[0], vec3(0.0f, 1.0f, 1.0f), 0.5, maters[0], cock_tex);
 	mesh_create_sphere(meshes[1], p_data.position[0], 0.2, maters[1], blank_tex);
-	mesh_create_cube(meshes[2], vec3(-1.0f, 0.7f, 2.0f), 0.3, maters[0], cat_tex);
+	mesh_create_cube(meshes[2], vec3(-1.0f, 0.7f, 2.0f), 0.3, maters[0], brick_tex, brick_n_tex, brick_s_tex);
 
 	for (int i = 3; i < 6; i++)
 	{
@@ -677,6 +687,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	load_screen_on(hInstance, nCmdShow);
 
 	int err = init();
+	cout << (unsigned char*)glGetString(GL_VENDOR) << endl << (unsigned char*)glGetString(GL_RENDERER) << endl;
+
 	if (err)
 	{
 		load_screen_off();
@@ -690,7 +702,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	init_scene();
 	init_physics(0.0, -0.001, 0.0);
 	
-	cout << (unsigned char*)glGetString(GL_VENDOR) << endl << (unsigned char*)glGetString(GL_RENDERER) << endl;
+	//cout << (unsigned char*)glGetString(GL_VENDOR) << endl << (unsigned char*)glGetString(GL_RENDERER) << endl;
 
 	set_vsync(VSYNC);
 		

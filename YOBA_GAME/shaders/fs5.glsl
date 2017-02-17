@@ -57,6 +57,8 @@ uniform sLight
 uniform struct Material
 {
 	sampler2D texture;
+	sampler2D tex_n;
+	sampler2D tex_s;
 
 	vec4  ambient;
 	vec4  diffuse;
@@ -68,6 +70,9 @@ uniform struct Material
 in Vertex 
 {
 	vec2  texcoord;
+	vec2  texnorm;
+	vec2  texdepth;
+
 	vec3  normal;
 	vec3  viewDir;
 
@@ -109,6 +114,8 @@ bool calc_cube_shadow(int ind)
 void main(void)
 {
 	vec3 normal   = normalize(Vert.normal);
+	normal		  = normal + texture(material.tex_n, Vert.texcoord).xyz + 
+		texture(material.tex_s, Vert.texcoord).xyz * 0.001;
 	vec3 viewDir  = normalize(Vert.viewDir);
 	color = material.emission;
 
@@ -175,7 +182,7 @@ void main(void)
 		float RdotVpow = max(pow(max(dot(reflect(-viewDir, normal), lightDir), 0.0), material.shininess), 0.0);
 		color += material.specular * sLight_specular[i] * RdotVpow * attenuation;
 	}
-	
+
 	if (use_tex == 1)
 		color *= vec4(1.0, 1.0, 1.0, 1.0);
 	else

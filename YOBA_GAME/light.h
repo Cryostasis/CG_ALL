@@ -74,6 +74,10 @@ struct material_t
 struct material_loc_t
 {
 	GLint texture_loc;
+
+	GLint tex_n_loc;
+	GLint tex_s_loc;
+	
 	GLint ambient_loc;
 	GLint diffuse_loc;
 	GLint specular_loc;

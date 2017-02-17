@@ -4,6 +4,9 @@
 #define VERT_TEXCOORD 1
 #define VERT_NORMAL   2
 
+#define VERT_TEXNORM 3
+#define VERT_TEXDEPTH 4
+
 #define MAX_P_LIGHTS 3
 #define MAX_D_LIGHTS 3
 #define MAX_S_LIGHTS 3
@@ -11,6 +14,10 @@
 layout(location = VERT_POSITION) in vec3 position;
 layout(location = VERT_TEXCOORD) in vec2 texcoord;
 layout(location = VERT_NORMAL)   in vec3 normal;
+
+layout(location = VERT_TEXNORM) in vec2 texnorm;
+layout(location = VERT_TEXDEPTH) in vec2 texdepth;
+
 
 uniform struct Transform
 { 
@@ -58,6 +65,9 @@ uniform sLight
 out Vertex 
 {
 	vec2  texcoord;
+	vec2  texnorm;
+	vec2  texdepth;
+
 	vec3  normal;
 	vec3  viewDir;
 
@@ -72,7 +82,7 @@ out Vertex
 	vec3  sLightDir[MAX_S_LIGHTS];
 	float sDistance[MAX_S_LIGHTS];
 	vec4  sSmcoord [MAX_S_LIGHTS];
-	vec4  qsSmcoord [MAX_S_LIGHTS];
+	//vec4  qsSmcoord [MAX_S_LIGHTS];
 } Vert;
 
 void main(void)
@@ -80,6 +90,9 @@ void main(void)
 	vec4 vertex   = transform.model * vec4(position, 1.0);
 
 	Vert.texcoord = texcoord;
+	Vert.texnorm  = texnorm;
+	Vert.texdepth = texdepth;
+
 	Vert.normal   = transform.normal * normal;
 	Vert.viewDir  = transform.viewPosition - vec3(vertex);
 

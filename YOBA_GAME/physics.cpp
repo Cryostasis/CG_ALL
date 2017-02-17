@@ -20,7 +20,7 @@ void physical_mesh_t::physics_analize()
 }
 
 physical_mesh_t::physical_mesh_t(vec3 pos, GLfloat sz, int mater, GLuint tex, g_object *mod, vec3 spd): 
-	mesh_t(pos, vec3(sz, sz, sz), mater, tex, mod) 
+	mesh_t(pos, vec3(sz, sz, sz), mater, tex, -1, -1, mod) 
 {
 	speed = spd;
 }

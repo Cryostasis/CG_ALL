@@ -18,7 +18,8 @@ mesh_t::mesh_t()
 
 }
 
-mesh_t::mesh_t(vec3 pos, vec3 scale, int mater, GLuint tex, g_object *mod)
+mesh_t::mesh_t(vec3 pos, vec3 scale, int mater, GLuint tex, 
+	GLuint texn, GLuint texs, g_object *mod)
 {
 	vert_cnt = mod->vert_num;
 	ind_cnt = mod->ind_num;
@@ -30,6 +31,8 @@ mesh_t::mesh_t(vec3 pos, vec3 scale, int mater, GLuint tex, g_object *mod)
 	size = fmax(fmax(scale.v[0], scale.v[1]), scale.v[2]);
 	material = mater;
 	texture = tex;
+	tex_n = texn;
+	tex_s = texs;
 	visible = true;
 	physics = false;
 	model = mod;
@@ -110,6 +113,17 @@ void mesh_t::render(GLuint program, camera_t &camera)
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, texture);
 		glUniform1i(material_locs.texture_loc, 0);
+
+		if (tex_n != -1 && tex_s != -1)
+		{
+			glActiveTexture(GL_TEXTURE0);
+			glBindTexture(GL_TEXTURE_2D, tex_n);
+			glUniform1i(material_locs.tex_n_loc, 0);
+
+			glActiveTexture(GL_TEXTURE0);
+			glBindTexture(GL_TEXTURE_2D, tex_s);
+			glUniform1i(material_locs.tex_s_loc, 0);
+		}
 	}
 
 	glBindVertexArray(VAO);
@@ -223,7 +237,8 @@ void mesh_t::look_at_dir(vec3 pos, vec3 dir, vec3 up)
 	rotation = GLLookAt(pos, pos + dir, up);
 }
 
-void mesh_create_cube(mesh_t &obj, vec3 position, GLfloat scale, int material, GLuint tex)
+void mesh_create_cube(mesh_t &obj, vec3 position, GLfloat scale, int material, 
+	GLuint tex, GLuint texn, GLuint texs)
 {
 	static bool flag;
 	static int  index;
@@ -233,7 +248,7 @@ void mesh_create_cube(mesh_t &obj, vec3 position, GLfloat scale, int material, G
 	flag = true;
 	if (index == -1)
 		return;
-	obj = mesh_t(position, vec3(scale, scale, scale), material, tex, &objects[index]);
+	obj = mesh_t(position, vec3(scale, scale, scale), material, tex, texn, texs, &objects[index]);
 }
 
 void mesh_create_sphere(mesh_t &obj, vec3 position, GLfloat scale, int material, GLuint tex)
@@ -246,7 +261,7 @@ void mesh_create_sphere(mesh_t &obj, vec3 position, GLfloat scale, int material,
 	flag = true;
 	if (index == -1)
 		return;
-	obj = mesh_t(position, vec3(scale, scale, scale), material, tex, &objects[index]);
+	obj = mesh_t(position, vec3(scale, scale, scale), material, tex, -1, -1, &objects[index]);
 }
 
 void mesh_create_from_file(char *file, mesh_t &obj, vec3 position, GLfloat scale, int material, GLuint tex)
@@ -254,10 +269,10 @@ void mesh_create_from_file(char *file, mesh_t &obj, vec3 position, GLfloat scale
 	int index = reg_object(file);
 	if (index == -1)
 		return;
-	obj = mesh_t(position, vec3(scale, scale, scale), material, tex, &objects[index]);
+	obj = mesh_t(position, vec3(scale, scale, scale), material, tex, -1, -1, &objects[index]);
 }
 
 void mesh_create_from_clone(mesh_t &obj, g_object clone, vec3 position, GLfloat scale, GLuint tex)
 {
-	obj = mesh_t(position, vec3(scale, scale, scale), 0, tex, &clone);
+	obj = mesh_t(position, vec3(scale, scale, scale), 0, tex, -1, -1, &clone);
 }

@@ -159,6 +159,10 @@ int init_programs()
 	get_unif_loc(&use_tex_loc, Program, "use_tex");
 
 	get_unif_loc(&material_locs.texture_loc, Program, "material.texture");
+	
+	get_unif_loc(&material_locs.tex_n_loc, Program, "material.tex_n");
+	get_unif_loc(&material_locs.tex_s_loc, Program, "material.tex_s");
+
 	get_unif_loc(&material_locs.ambient_loc, Program, "material.ambient");
 	get_unif_loc(&material_locs.diffuse_loc, Program, "material.diffuse");
 	get_unif_loc(&material_locs.specular_loc, Program, "material.specular");

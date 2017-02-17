@@ -3,7 +3,7 @@
 
 #include "disable_warnings.h"
 
-#define LOAD_BIN 1
+#define LOAD_BIN 0
 
 #define BIN_FORMAT_VER 1
 
