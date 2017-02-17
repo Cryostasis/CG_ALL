@@ -104,7 +104,7 @@ void prepare_text(int wnd_w, int wnd_h, int X, int Y, char *text, vec4 color, fl
 		font_mesh[i] = mesh_t(
 			vec3((GLfloat)x / wnd_w, (GLfloat)y / wnd_h, 0),
 			vec3(scale * chr_aspect / aspect, scale, scale) / FONT_MULTIPLYER,
-			0, font_tex, &font_map[text[i]].obj);
+			0, font_tex, -1, -1, &font_map[text[i]].obj);
 		font_mesh[i].rotate(M_PI / 2, 0, 0);
 		i++;
 		x += (GLfloat)font_map[text[i]].width / 2;

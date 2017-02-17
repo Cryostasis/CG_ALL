@@ -34,7 +34,7 @@ class mesh_t
 {
 public:
 	mesh_t();
-	mesh_t(vec3 pos, vec3 scale, int mater, GLuint tex, g_object *mod);
+	mesh_t(vec3 pos, vec3 scale, int mater, GLuint tex, GLuint texn , GLuint texs, g_object *mod);
 	mat4 get_model_mat();
 	void render(GLuint program, camera_t &camera);
 	void render_normals(GLuint program, camera_t &camera);
@@ -71,6 +71,8 @@ public:
 	vec3 scl;
 	GLfloat size;
 	GLuint texture;
+	GLuint tex_n;
+	GLuint tex_s;
 	bool visible;
 	mat4 aux_matrix;
 	g_object *model;
@@ -78,7 +80,8 @@ public:
 
 extern GLuint norm_tex;
 
-void mesh_create_cube(mesh_t &obj, vec3 position, GLfloat scale, int material, GLuint tex);
+void mesh_create_cube(mesh_t &obj, vec3 position, GLfloat scale, int material, 
+	GLuint tex, GLuint texn, GLuint texs);
 void mesh_create_sphere(mesh_t &obj, vec3 position, GLfloat scale, int material, GLuint tex);
 void mesh_create_from_file(char *file, mesh_t &obj, vec3 position, GLfloat scale, int material, GLuint tex);
 
