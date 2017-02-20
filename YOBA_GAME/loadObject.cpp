@@ -3,6 +3,8 @@
 #include <cstdlib>
 #include <string>
 #include <vector>
+#include "math/math3d.h"
+#include "math/mathgl.h"
 
 #include "loadObject.h"
 #include "error_log.h"

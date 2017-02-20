@@ -25,15 +25,14 @@
 #include "winfuncs.h"
 #include "fonts.h"
 
-#include <stdio.h>
-#include <stdlib.h>
+#include <cstdio>
+#include <cstdlib>
 #include <string>
 #include <queue>
 #include <set>
 #include <iostream>
 #include <fstream>
 #include <cmath>
-#include <math.h>
 #include <Windows.h>
 
 using namespace std;
@@ -135,7 +134,7 @@ void reg_texture()
 void scene_tact()
 {
 	meshes[0].rotate(0, diff_angle, 0);
-	meshes[2].rotate(diff_angle, diff_angle, diff_angle);
+	//meshes[2].rotate(diff_angle, diff_angle, diff_angle);
 	
 	for (int i = 0; i < MAX_BULLETS; i++)
 		if (bullets[i].visible)
@@ -183,9 +182,9 @@ void render(GLuint program, camera_t &camera)
 
 	if (Program == program)
 	{
-		activate_tex(1, p_data.depth_tex[0], "pLight_depth_tex", GL_TEXTURE_CUBE_MAP);
-		activate_tex(2, d_data.depth_tex[0], "dLight_depth_tex", GL_TEXTURE_2D);
-		activate_tex(3, s_data.depth_tex[0], "sLight_depth_tex", GL_TEXTURE_2D);
+		activate_tex(3, p_data.depth_tex[0], "pLight_depth_tex", GL_TEXTURE_CUBE_MAP);
+		activate_tex(4, d_data.depth_tex[0], "dLight_depth_tex", GL_TEXTURE_2D);
+		activate_tex(5, s_data.depth_tex[0], "sLight_depth_tex", GL_TEXTURE_2D);
 
 		setup_lights(program);
 	}
@@ -327,6 +326,7 @@ void init_scene()
 	{
 		mesh_create_sphere(meshes[i], vec3(1.0f, 1.5f, 2.0f), 0.2, maters[0], sych_tex);
 		meshes[i].rotate_around_y_central(p_data.position[0], M_PI * 2 * i / 3, M_PI * 2 * i / 3);
+		meshes[i].visible = false;
 	}
 	mesh_create_from_file("objects/cone.obj", meshes[6], s_data.position[0], 0.2, maters[1], cone_tex);
 	meshes[6].rotate(0.0, 0.0, -M_PI / 4);
@@ -363,6 +363,7 @@ void init_scene()
 	{
 		mesh_create_from_file("objects/yoba.obj", targets[i], vec3(0.0, 2.5, 1.0), 0.2, maters[0], Yyoba_tex);
 		targets[i].rotate_around_y_central(p_data.position[0], M_PI * 2 * i / targ_num, M_PI * 2 * i / targ_num + 1.12 * M_PI);
+		targets[i].visible = false;
 	}
 
 	for (int i = 0; i < MAX_BULLETS; i++)
@@ -391,7 +392,7 @@ void init_lighting()
 		vec4(0.0f, 2.0f, 2.0f, 1.0f),
 		vec4(0.1f, 0.1f, 0.1f, 1.0f),
 		vec4(1.0f, 1.0f, 1.0f, 1.0f),
-		vec4(1.0f, 1.0f, 1.0f, 1.0f),
+		vec4(0.03f, 0.03f, 0.03f, 0.03f),
 		vec3(0.5f, 0.0f, 0.02f), 
 		window, shad_size);
 
@@ -399,7 +400,7 @@ void init_lighting()
 		vec4(-1.0f, 1.0f, 0.0f, 0.0f),
 		vec4(0.1f, 0.1f, 0.1f, 1.0f),
 		vec4(1.0f, 1.0f, 1.0f, 1.0f),
-		vec4(1.0f, 1.0f, 1.0f, 1.0f),
+		vec4(0.03f, 0.03f, 0.03f, 0.03f),
 		window, shad_size);
 	
 	s_data.add(
@@ -407,7 +408,7 @@ void init_lighting()
 		vec4(-1.0f, -1.0f, 0.0f, 1.0f),
 		vec4(0.1f, 0.1f, 0.1f, 1.0f),
 		vec4(1.0f, 1.0f, 1.0f, 1.0f),
-		vec4(1.0f, 1.0f, 1.0f, 1.0f),
+		vec4(0.03f, 0.03f, 0.03f, 0.03f),
 		vec3(0.09f, 0.0f, 0.015f), cosf(45.0 / 180.0 * M_PI * 2), 25.0f,
 		window, shad_size);
 

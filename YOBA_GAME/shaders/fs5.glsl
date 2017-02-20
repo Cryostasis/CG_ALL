@@ -9,6 +9,8 @@
 #define MAX_D_LIGHTS 3
 #define MAX_S_LIGHTS 3
 
+#define NORMAL_MAPPING_DEPTH 0.5
+
 layout(location = USE_TEX) uniform int use_tex;
 
 uniform samplerCube pLight_depth_tex;
@@ -70,8 +72,8 @@ uniform struct Material
 in Vertex 
 {
 	vec2  texcoord;
-	vec2  texnorm;
-	vec2  texdepth;
+
+	vec3  viewTangent;
 
 	vec3  normal;
 	vec3  viewDir;
@@ -109,13 +111,13 @@ bool calc_cube_shadow(int ind)
         return false;
     else
         return true; 
-} 
+}     
 
 void main(void)
 {
 	vec3 normal   = normalize(Vert.normal);
-	normal		  = normal + texture(material.tex_n, Vert.texcoord).xyz + 
-		texture(material.tex_s, Vert.texcoord).xyz * 0.001;
+	vec4 t_n = texture(material.tex_n, Vert.texcoord);
+	//normal		  = normal + (2 * t_n.xyz - vec3(1.0, 1.0, 1.0)) * t_n[3] * NORMAL_MAPPING_DEPTH;
 	vec3 viewDir  = normalize(Vert.viewDir);
 	color = material.emission;
 
@@ -183,9 +185,35 @@ void main(void)
 		color += material.specular * sLight_specular[i] * RdotVpow * attenuation;
 	}
 
+
+	const float PO_SCALE = 0.1;
+
+	//vec4 h_map = texture(material.tex_s, Vert.texcoord);
+	//float h = - PO_SCALE * ((h_map.x + h_map.y + h_map.z) / 3.0) - bias;
+	//vec2 texcrd = Vert.texcoord - Vert.viewTangent.xy * h / Vert.viewTangent.z;
+
+	
+    const float numSteps  = 10.0;
+
+    float   step	= 1.0 / numSteps;
+    vec2    dtex	= Vert.viewTangent.xy * PO_SCALE / (numSteps * Vert.viewTangent.z);
+    float   height	= 1.0;
+    vec2    texcrd	= Vert.texcoord;
+
+	vec4	h_map	= texture(material.tex_s, texcrd);
+    float	h		= (h_map.x + h_map.y + h_map.z) / 3.0;
+
+    while (h * 8 < height)
+    {
+        height	-= step;
+        texcrd  += dtex;                               
+        h_map	= texture(material.tex_s, texcrd);
+		h		= (h_map.x + h_map.y + h_map.z) / 3;
+    }
+
 	if (use_tex == 1)
 		color *= vec4(1.0, 1.0, 1.0, 1.0);
 	else
-		color *= texture(material.texture, Vert.texcoord);
+		color *= texture(material.texture, texcrd);
 }
 ~

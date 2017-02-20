@@ -60,6 +60,10 @@ public:
 	GLuint N_VBO[2];
 	GLuint P_VAO;
 	GLuint P_VBO[2];
+	GLuint T_VAO;
+	GLuint T_VBO[3];
+	GLuint B_VAO;
+	GLuint B_VBO[3];
 	int vert_cnt;
 	int ind_cnt;
 	vec3 position;

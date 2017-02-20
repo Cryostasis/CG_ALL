@@ -65,8 +65,8 @@ uniform sLight
 out Vertex 
 {
 	vec2  texcoord;
-	vec2  texnorm;
-	vec2  texdepth;
+
+	vec3  viewTangent;
 
 	vec3  normal;
 	vec3  viewDir;
@@ -90,11 +90,15 @@ void main(void)
 	vec4 vertex   = transform.model * vec4(position, 1.0);
 
 	Vert.texcoord = texcoord;
-	Vert.texnorm  = texnorm;
-	Vert.texdepth = texdepth;
 
 	Vert.normal   = transform.normal * normal;
 	Vert.viewDir  = transform.viewPosition - vec3(vertex);
+                 
+	vec3 e = normalize(Vert.viewDir);
+    vec3 t = transform.normal * vec3(Vert.texcoord, 1.0);  
+    vec3 b = transform.normal * vec3(Vert.texcoord, 1.0);
+
+    Vert.viewTangent = vec3(dot(e, t), dot(e, b), dot(e, Vert.normal));
 
 	for (int i = 0; i < MAX_P_LIGHTS; i++)
 	{

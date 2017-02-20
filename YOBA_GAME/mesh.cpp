@@ -116,13 +116,13 @@ void mesh_t::render(GLuint program, camera_t &camera)
 
 		if (tex_n != -1 && tex_s != -1)
 		{
-			glActiveTexture(GL_TEXTURE0);
+			glActiveTexture(GL_TEXTURE1);
 			glBindTexture(GL_TEXTURE_2D, tex_n);
-			glUniform1i(material_locs.tex_n_loc, 0);
+			glUniform1i(material_locs.tex_n_loc, 1);
 
-			glActiveTexture(GL_TEXTURE0);
+			glActiveTexture(GL_TEXTURE2);
 			glBindTexture(GL_TEXTURE_2D, tex_s);
-			glUniform1i(material_locs.tex_s_loc, 0);
+			glUniform1i(material_locs.tex_s_loc, 2);
 		}
 	}
 
