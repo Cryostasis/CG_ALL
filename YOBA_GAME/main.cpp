@@ -6,10 +6,12 @@
 //#define GLEW_STATIC
 #define _USE_MATH_DEFINES
 
-#include "disable_warnings.h"
+
 
 #include <GL/glew.h>
 #include <GL/freeglut.h>
+
+#include "disable_warnings.h"
 
 #include "math/math3d.h"
 #include "math/mathgl.h"
@@ -494,7 +496,7 @@ void timer(int i)
 
 	char *buf = new char[5];
 	sprintf(buf, "%d", frames.size());
-	prepare_text(window[0], window[1], 0, 0, buf, vec4(1.0, 1.0, 1.0, 1.0), aspect, 12);
+	prepare_text(window[0], window[1], 200, -200, buf, vec4(1.0, 1.0, 1.0, 1.0), aspect, 12);
 
 	frames.push(new_ticks);
 	last_ticks = new_ticks;
@@ -536,7 +538,7 @@ void on_press_key(unsigned char key, int x, int y)
 
 void on_press_spec_key(int key, int x, int y)
 {
-	switch (key)
+ switch (key)
 	{
 	case GLUT_KEY_SHIFT_L:	{flag_down = 1; break; }
 	case GLUT_KEY_F1:		{meshes[1].visible = !meshes[1].visible; toggle_point_setup(); break; }
