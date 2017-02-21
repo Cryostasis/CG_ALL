@@ -54,8 +54,6 @@ public:
 	void look_at_dir(vec3 pos, vec3 dir, vec3 up);
 	void set_size(float sz);
 
-	bool physics;
-	int material;
 	GLuint VAO;
 	GLuint VBO[4];
 	GLuint N_VAO;
@@ -74,10 +72,12 @@ public:
 	mat4 scale;
 	vec3 scl;
 	GLfloat size;
+	int material;
 	GLuint texture;
 	GLuint tex_n;
 	GLuint tex_s;
 	bool visible;
+	bool physics;
 	mat4 aux_matrix;
 	g_object *model;
 };

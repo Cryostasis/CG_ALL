@@ -41,6 +41,9 @@ void camera_t::rotate(float x, float y, float z)
 		rotation.v[0] = M_PI / 2;
 }
 
+extern int ololo;
+int ololo = 3;
+
 mat4 camera_t::get_light_matrix()
 {
 	static const mat4 bias(

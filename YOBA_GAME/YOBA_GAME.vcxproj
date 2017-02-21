@@ -110,22 +110,14 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-<<<<<<< HEAD
       <AdditionalIncludeDirectories>$(SolutionDir)GL_lib\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-=======
-      <AdditionalIncludeDirectories>C:\code\CG_ALL\GL_lib\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
->>>>>>> origin/master
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>OpenGL32.lib;freeglut.lib;%(AdditionalDependencies)</AdditionalDependencies>
-<<<<<<< HEAD
       <PerUserRedirection>true</PerUserRedirection>
       <AdditionalLibraryDirectories>$(SolutionDir)GL_lib\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-=======
-      <AdditionalLibraryDirectories>C:\code\CG_ALL\GL_lib\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
->>>>>>> origin/master
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">

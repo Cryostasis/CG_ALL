@@ -170,12 +170,7 @@ bool CreateConsole()
 		/**stdout = *(::_fdopen(hCrt, "w"));
 		::setvbuf(stdout, NULL, _IONBF, 0);
 		*stderr = *(::_fdopen(hCrt, "w"));
-<<<<<<< HEAD
-		::setvbuf(stderr, NULL, _IONBF, 0);
-		freopen("CONOUT$", "w", stdout);
-=======
 		::setvbuf(stderr, NULL, _IONBF, 0);*/
->>>>>>> origin/master
 		return TRUE;
 	}
 	return FALSE;

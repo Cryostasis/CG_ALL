@@ -89,7 +89,6 @@ in Vertex
 	vec3  sLightDir[MAX_S_LIGHTS];
 	float sDistance[MAX_S_LIGHTS];
 	vec4  sSmcoord [MAX_S_LIGHTS];
-	vec4  qsSmcoord [MAX_S_LIGHTS];
 } Vert;
 
 layout(location = FRAG_OUTPUT0) out vec4 color;
