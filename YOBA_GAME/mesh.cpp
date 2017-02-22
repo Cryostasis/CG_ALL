@@ -41,7 +41,7 @@ mesh_t::mesh_t(vec3 pos, vec3 scale, int mater, GLuint tex,
 	glGenVertexArrays(1, &VAO);
 	glBindVertexArray(VAO);
 
-	glGenBuffers(4, VBO);
+	glGenBuffers(6, VBO);
 
 	glBindBuffer(GL_ARRAY_BUFFER, VBO[0]);
 	glBufferData(GL_ARRAY_BUFFER, vert_cnt * sizeof(GLfloat) * 3, &model->verts[0], GL_STATIC_DRAW);
@@ -61,9 +61,24 @@ mesh_t::mesh_t(vec3 pos, vec3 scale, int mater, GLuint tex,
 	glVertexAttribPointer(VERT_NORMAL, 3, GL_FLOAT, GL_FALSE, 0, 0);
 	glEnableVertexAttribArray(VERT_NORMAL);
 
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, VBO[3]);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, ind_cnt * sizeof(GLuint), &model->indicies[0], GL_STATIC_DRAW);
+	
 
+	glBindBuffer(GL_ARRAY_BUFFER, VBO[3]);
+	glBufferData(GL_ARRAY_BUFFER, vert_cnt * sizeof(GLfloat) * 3, &model->tangent[0], GL_STATIC_DRAW);
+
+	glVertexAttribPointer(VERT_TANGENT, 3, GL_FLOAT, GL_FALSE, 0, 0);
+	glEnableVertexAttribArray(VERT_TANGENT);
+
+	glBindBuffer(GL_ARRAY_BUFFER, VBO[4]);
+	glBufferData(GL_ARRAY_BUFFER, vert_cnt * sizeof(GLfloat) * 3, &model->bitangent[0], GL_STATIC_DRAW);
+
+	glVertexAttribPointer(VERT_BITANGENT, 3, GL_FLOAT, GL_FALSE, 0, 0);
+	glEnableVertexAttribArray(VERT_BITANGENT);
+
+	
+
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, VBO[5]);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, ind_cnt * sizeof(GLuint), &model->indicies[0], GL_STATIC_DRAW);
 
 	glGenVertexArrays(1, &N_VAO);
 	glBindVertexArray(N_VAO);
@@ -114,7 +129,7 @@ void mesh_t::render(GLuint program, camera_t &camera)
 		glBindTexture(GL_TEXTURE_2D, texture);
 		glUniform1i(material_locs.texture_loc, 0);
 
-		if (tex_n != -1 && tex_s != -1)
+		if (tex_n != NO_TEXTURE && tex_s != NO_TEXTURE)
 		{
 			glActiveTexture(GL_TEXTURE1);
 			glBindTexture(GL_TEXTURE_2D, tex_n);
@@ -123,7 +138,11 @@ void mesh_t::render(GLuint program, camera_t &camera)
 			glActiveTexture(GL_TEXTURE2);
 			glBindTexture(GL_TEXTURE_2D, tex_s);
 			glUniform1i(material_locs.tex_s_loc, 2);
+
+			glUniform1i(USE_NM_LOC, 1);
 		}
+		else
+			glUniform1i(USE_NM_LOC, 0);
 	}
 
 	glBindVertexArray(VAO);
@@ -251,7 +270,7 @@ void mesh_create_cube(mesh_t &obj, vec3 position, GLfloat scale, int material,
 	obj = mesh_t(position, vec3(scale, scale, scale), material, tex, texn, texs, &objects[index]);
 }
 
-void mesh_create_sphere(mesh_t &obj, vec3 position, GLfloat scale, int material, GLuint tex)
+void mesh_create_sphere(mesh_t &obj, vec3 position, GLfloat scale, int material, GLuint tex, GLuint texn, GLuint texs)
 {
 	static bool flag;
 	static int  index;
@@ -261,18 +280,18 @@ void mesh_create_sphere(mesh_t &obj, vec3 position, GLfloat scale, int material,
 	flag = true;
 	if (index == -1)
 		return;
-	obj = mesh_t(position, vec3(scale, scale, scale), material, tex, -1, -1, &objects[index]);
+	obj = mesh_t(position, vec3(scale, scale, scale), material, tex, texn, texs, &objects[index]);
 }
 
-void mesh_create_from_file(char *file, mesh_t &obj, vec3 position, GLfloat scale, int material, GLuint tex)
+void mesh_create_from_file(char *file, mesh_t &obj, vec3 position, GLfloat scale, int material, GLuint tex, GLuint texn, GLuint texs)
 {
 	int index = reg_object(file);
 	if (index == -1)
 		return;
-	obj = mesh_t(position, vec3(scale, scale, scale), material, tex, -1, -1, &objects[index]);
+	obj = mesh_t(position, vec3(scale, scale, scale), material, tex, texn, texs, &objects[index]);
 }
 
-void mesh_create_from_clone(mesh_t &obj, g_object clone, vec3 position, GLfloat scale, GLuint tex)
+void mesh_create_from_clone(mesh_t &obj, g_object clone, vec3 position, GLfloat scale, GLuint tex, GLuint texn, GLuint texs)
 {
-	obj = mesh_t(position, vec3(scale, scale, scale), 0, tex, -1, -1, &clone);
+	obj = mesh_t(position, vec3(scale, scale, scale), 0, tex, texn, texs, &clone);
 }

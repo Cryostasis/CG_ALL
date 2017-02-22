@@ -6,12 +6,19 @@
 #define VERT_POSITION	0
 #define VERT_TEXCOORD	1
 #define VERT_NORMAL		2
+#define VERT_TANGENT	3
+#define VERT_BITANGENT	4
 
 #define FRAG_OUTPUT0	0
 
 #define USE_TEX_LOC		5
+#define USE_NM_LOC		6
+#define USE_PM_LOC		7
+
 #define LINE_COLOR_LOC  6
 #define FONT_TEX		7
+
+#define NO_TEXTURE		-1
 
 #include "light.h"
 #include "camera.h"
@@ -55,15 +62,12 @@ public:
 	void set_size(float sz);
 
 	GLuint VAO;
-	GLuint VBO[4];
+	GLuint VBO[6];
 	GLuint N_VAO;
 	GLuint N_VBO[2];
 	GLuint P_VAO;
 	GLuint P_VBO[2];
-	GLuint T_VAO;
-	GLuint T_VBO[3];
-	GLuint B_VAO;
-	GLuint B_VBO[3];
+
 	int vert_cnt;
 	int ind_cnt;
 	vec3 position;
@@ -86,7 +90,9 @@ extern GLuint norm_tex;
 
 void mesh_create_cube(mesh_t &obj, vec3 position, GLfloat scale, int material, 
 	GLuint tex, GLuint texn, GLuint texs);
-void mesh_create_sphere(mesh_t &obj, vec3 position, GLfloat scale, int material, GLuint tex);
-void mesh_create_from_file(char *file, mesh_t &obj, vec3 position, GLfloat scale, int material, GLuint tex);
+void mesh_create_sphere(mesh_t &obj, vec3 position, GLfloat scale, int material, 
+	GLuint tex, GLuint texn, GLuint texs);
+void mesh_create_from_file(char *file, mesh_t &obj, vec3 position, GLfloat scale, int material, 
+	GLuint tex, GLuint texn, GLuint texs);
 
 #endif

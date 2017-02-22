@@ -4,6 +4,8 @@
 
 #define FRAG_OUTPUT0 0
 #define USE_TEX 5
+#define USE_NM	6
+#define USE_PM	7
 
 #define MAX_P_LIGHTS 3
 #define MAX_D_LIGHTS 3
@@ -12,6 +14,8 @@
 #define NORMAL_MAPPING_DEPTH 0.5
 
 layout(location = USE_TEX) uniform int use_tex;
+layout(location = USE_NM) uniform int useNormalMapping;
+layout(location = USE_PM) uniform int useParallaxMapping;
 
 uniform samplerCube pLight_depth_tex;
 uniform sampler2D dLight_depth_tex;
@@ -74,6 +78,9 @@ in Vertex
 	vec2  texcoord;
 
 	vec3  viewTangent;
+	vec3  lightTangent;
+	vec3  fragTangent;
+	mat3  TBN;
 
 	vec3  normal;
 	vec3  viewDir;
@@ -111,13 +118,92 @@ bool calc_cube_shadow(int ind)
         return false;
     else
         return true; 
-}     
+}
+
+#define HEIGHT_SCALE 0.1
+
+vec2 ParallaxMapping1(vec2 texCoords, vec3 viewDir)
+{ 
+	//vec3 h_map = texture(material.tex_s, texCoords).xyz;
+	//float height = (h_map.x + h_map.y + h_map.z) / 3.0;    
+    
+	
+	float height = texture(material.tex_s, texCoords).r;    
+    vec2 p = viewDir.xy / viewDir.z * (height * HEIGHT_SCALE);
+    return texCoords - p;    
+} 
+
+vec2 ParallaxMapping2(vec2 texCoords, vec3 viewDir)
+{
+	const float numLayers = 20;
+    float layerDepth = 1.0 / numLayers;
+    float currentLayerDepth = 0.0;
+    vec2 P = viewDir.xy * HEIGHT_SCALE; 
+    vec2 deltaTexCoords = P / numLayers;
+
+	vec2  currentTexCoords     = texCoords;
+	vec3 h_map = texture(material.tex_s, currentTexCoords).xyz;
+	float currentDepthMapValue = (h_map.x + h_map.y + h_map.z) / 3.0; 	
+	//float currentDepthMapValue = texture(material.tex_s, currentTexCoords).r;
+  
+	while(currentLayerDepth < currentDepthMapValue)
+	{
+		currentTexCoords -= deltaTexCoords;
+		h_map = texture(material.tex_s, currentTexCoords).xyz;
+		currentDepthMapValue = (h_map.x + h_map.y + h_map.z) / 3.0; 
+		//currentDepthMapValue = texture(material.tex_s, currentTexCoords).r;  
+		currentLayerDepth += layerDepth;  
+	}
+
+	return currentTexCoords;
+}
+
+vec2 ParallaxMapping3(vec2 texCoords, vec3 viewDir)
+{
+	const float numLayers = 20;
+    float layerDepth = 1.0 / numLayers;
+    float currentLayerDepth = 0.0;
+    vec2 P = viewDir.xy * HEIGHT_SCALE; 
+    vec2 deltaTexCoords = P / numLayers;
+
+	vec2  currentTexCoords     = texCoords;
+	vec3 h_map = texture(material.tex_s, currentTexCoords).xyz;
+	float currentDepthMapValue = (h_map.x + h_map.y + h_map.z) / 3.0; 	
+	//float currentDepthMapValue = texture(material.tex_s, currentTexCoords).r;
+  
+	while(currentLayerDepth < currentDepthMapValue)
+	{
+		currentTexCoords -= deltaTexCoords;
+		h_map = texture(material.tex_s, currentTexCoords).xyz;
+		currentDepthMapValue = (h_map.x + h_map.y + h_map.z) / 3.0; 
+		//currentDepthMapValue = texture(material.tex_s, currentTexCoords).r;  
+		currentLayerDepth += layerDepth;  
+	}
+
+	vec2 prevTexCoords = currentTexCoords + deltaTexCoords;
+	float afterDepth  = currentDepthMapValue - currentLayerDepth;
+	h_map = texture(material.tex_s, prevTexCoords).xyz;
+	float beforeDepth = (h_map.x + h_map.y + h_map.z) / 3.0 - currentLayerDepth + layerDepth;
+
+	float weight = afterDepth / (afterDepth - beforeDepth);
+	vec2 finalTexCoords = prevTexCoords * weight + currentTexCoords * (1.0 - weight);
+
+	return finalTexCoords;
+}
 
 void main(void)
 {
-	vec3 normal   = normalize(Vert.normal);
-	vec4 t_n = texture(material.tex_n, Vert.texcoord);
-	//normal		  = normal + (2 * t_n.xyz - vec3(1.0, 1.0, 1.0)) * t_n[3] * NORMAL_MAPPING_DEPTH;
+	vec3 normal;
+	if (useNormalMapping == 1)
+	{
+		normal = texture(material.tex_n, Vert.texcoord).rgb;
+		normal = normalize(normal * 2.0 - 1.0);
+		normal = normalize(normal + vec3(0.0, 0.0, 1.0));
+		normal = normalize(transpose(Vert.TBN) * normal);
+	}
+	else
+		normal   = normalize(Vert.normal);
+
 	vec3 viewDir  = normalize(Vert.viewDir);
 	color = material.emission;
 
@@ -125,9 +211,9 @@ void main(void)
 
 	for (int i = 0; i < pLight_num; i++)
 	{
-		if (calc_cube_shadow(i))
+		//if (calc_cube_shadow(i))
 		//	return;
-			continue;
+		//	continue;
 
 		vec3 lightDir = normalize(Vert.pLightDir[i]);
 		float attenuation = 1.0 / (pLight_attenuation[i].x +
@@ -185,35 +271,12 @@ void main(void)
 		color += material.specular * sLight_specular[i] * RdotVpow * attenuation;
 	}
 
-
-	const float PO_SCALE = 0.1;
-
-	//vec4 h_map = texture(material.tex_s, Vert.texcoord);
-	//float h = - PO_SCALE * ((h_map.x + h_map.y + h_map.z) / 3.0) - bias;
-	//vec2 texcrd = Vert.texcoord - Vert.viewTangent.xy * h / Vert.viewTangent.z;
-
+	vec3 viewDir_PM   = normalize(Vert.viewTangent - Vert.fragTangent);
+    vec2 texCoords = ParallaxMapping3(Vert.texcoord, viewDir_PM);
 	
-    const float numSteps  = 10.0;
-
-    float   step	= 1.0 / numSteps;
-    vec2    dtex	= Vert.viewTangent.xy * PO_SCALE / (numSteps * Vert.viewTangent.z);
-    float   height	= 1.0;
-    vec2    texcrd	= Vert.texcoord;
-
-	vec4	h_map	= texture(material.tex_s, texcrd);
-    float	h		= (h_map.x + h_map.y + h_map.z) / 3.0;
-
-    while (h * 8 < height)
-    {
-        height	-= step;
-        texcrd  += dtex;                               
-        h_map	= texture(material.tex_s, texcrd);
-		h		= (h_map.x + h_map.y + h_map.z) / 3;
-    }
-
 	if (use_tex == 1)
 		color *= vec4(1.0, 1.0, 1.0, 1.0);
 	else
-		color *= texture(material.texture, texcrd);
+		color *= texture(material.texture, texCoords);
 }
 ~

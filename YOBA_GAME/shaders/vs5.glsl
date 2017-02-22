@@ -4,8 +4,8 @@
 #define VERT_TEXCOORD 1
 #define VERT_NORMAL   2
 
-#define VERT_TEXNORM 3
-#define VERT_TEXDEPTH 4
+#define VERT_TANGENT 3
+#define VERT_BITANGENT 4
 
 #define MAX_P_LIGHTS 3
 #define MAX_D_LIGHTS 3
@@ -15,8 +15,8 @@ layout(location = VERT_POSITION) in vec3 position;
 layout(location = VERT_TEXCOORD) in vec2 texcoord;
 layout(location = VERT_NORMAL)   in vec3 normal;
 
-layout(location = VERT_TEXNORM) in vec2 texnorm;
-layout(location = VERT_TEXDEPTH) in vec2 texdepth;
+layout(location = VERT_TANGENT) in vec3 tangent;
+layout(location = VERT_BITANGENT) in vec3 biTangent;
 
 
 uniform struct Transform
@@ -67,6 +67,9 @@ out Vertex
 	vec2  texcoord;
 
 	vec3  viewTangent;
+	vec3  lightTangent;
+	vec3  fragTangent;
+	mat3  TBN;
 
 	vec3  normal;
 	vec3  viewDir;
@@ -93,12 +96,21 @@ void main(void)
 
 	Vert.normal   = transform.normal * normal;
 	Vert.viewDir  = transform.viewPosition - vec3(vertex);
-                 
-	vec3 e = normalize(Vert.viewDir);
-    vec3 t = transform.normal * vec3(Vert.texcoord, 1.0);  
-    vec3 b = transform.normal * vec3(Vert.texcoord, 1.0);
 
-    Vert.viewTangent = vec3(dot(e, t), dot(e, b), dot(e, Vert.normal));
+	//vec3 T = normalize(vec3(transform.model * vec4(tangent,   0.0)));
+	//vec3 B = normalize(vec3(transform.model * vec4(biTangent, 0.0)));
+	//vec3 N = normalize(vec3(transform.model * vec4(normal,    0.0)));
+
+	vec3 T = normalize(vec3(transform.model * vec4(tangent, 0.0)));
+	vec3 N = normalize(vec3(transform.model * vec4(normal, 0.0)));
+	T = normalize(T - dot(T, N) * N);
+	vec3 B = cross(N, T);
+
+	Vert.TBN = transpose(mat3(T, B, N));
+
+    Vert.viewTangent	= Vert.TBN * transform.viewPosition;
+    Vert.lightTangent	= Vert.TBN * pLight_position[0].xyz;
+    Vert.fragTangent	= Vert.TBN * vertex.xyz;
 
 	for (int i = 0; i < MAX_P_LIGHTS; i++)
 	{

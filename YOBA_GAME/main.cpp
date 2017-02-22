@@ -1,6 +1,7 @@
 #pragma comment(lib, "opengl32.lib")
 #pragma comment(lib, "glu32.lib")
 #pragma comment(lib, "glew32.lib")
+#pragma comment(lib, "assimp.lib")
 //#pragma comment(lib, "glew32s.lib")
 
 //#define GLEW_STATIC
@@ -10,6 +11,10 @@
 
 #include <GL/glew.h>
 #include <GL/freeglut.h>
+
+#include <assimp/Importer.hpp> 
+#include <assimp/scene.h>      
+#include <assimp/postprocess.h>
 
 #include "math/math3d.h"
 #include "math/mathgl.h"
@@ -103,6 +108,11 @@ GLuint f22_tex;
 GLuint su35_tex;
 GLuint t50_tex;
 
+GLuint Yyoba_n_tex;
+GLuint Sych_n_tex;
+GLuint Flat_n_tex;
+GLuint Flat_s_tex;
+
 void reg_texture()
 {
 	norm_tex =	get_texture_from_tga("textures/normals.tga");
@@ -129,6 +139,11 @@ void reg_texture()
 	f22_tex =	get_texture_from_tga("textures/f22.tga");
 	su35_tex =	get_texture_from_tga("textures/su35.tga");
 	t50_tex =	get_texture_from_tga("textures/t50.tga");
+
+	Yyoba_n_tex = get_texture_from_tga("textures/Yyoba_n.tga");
+	Sych_n_tex = get_texture_from_tga("textures/Sych_n.tga");
+	Flat_n_tex = get_texture_from_tga("textures/flat_n.tga");
+	Flat_s_tex = get_texture_from_tga("textures/flat_s.tga");
 }
 
 void scene_tact()
@@ -318,20 +333,20 @@ void init_scene()
 		mesh_num -= 8;
 	meshes = new mesh_t[mesh_num];
 
-	mesh_create_from_file("objects/fig1.obj", meshes[0], vec3(0.0f, 1.0f, 1.0f), 0.5, maters[0], cock_tex);
-	mesh_create_sphere(meshes[1], p_data.position[0], 0.2, maters[1], blank_tex);
+	mesh_create_from_file("objects/fig1.obj", meshes[0], vec3(0.0f, 1.0f, 1.0f), 0.5, maters[0], cock_tex, NO_TEXTURE, NO_TEXTURE);
+	mesh_create_sphere(meshes[1], p_data.position[0], 0.2, maters[1], blank_tex, NO_TEXTURE, NO_TEXTURE);
 	mesh_create_cube(meshes[2], vec3(-1.0f, 0.7f, 2.0f), 0.3, maters[0], brick_tex, brick_n_tex, brick_s_tex);
 
 	for (int i = 3; i < 6; i++)
 	{
-		mesh_create_sphere(meshes[i], vec3(1.0f, 1.5f, 2.0f), 0.2, maters[0], sych_tex);
+		mesh_create_sphere(meshes[i], vec3(1.0f, 1.5f, 2.0f), 0.2, maters[0], sych_tex, Sych_n_tex, Sych_n_tex);
 		meshes[i].rotate_around_y_central(p_data.position[0], M_PI * 2 * i / 3, M_PI * 2 * i / 3);
 		meshes[i].visible = false;
 	}
-	mesh_create_from_file("objects/cone.obj", meshes[6], s_data.position[0], 0.2, maters[1], cone_tex);
+	mesh_create_from_file("objects/cone.obj", meshes[6], s_data.position[0], 0.2, maters[1], cone_tex, NO_TEXTURE, NO_TEXTURE);
 	meshes[6].rotate(0.0, 0.0, -M_PI / 4);
 
-	mesh_create_from_file("objects/flat.obj", meshes[7], vec3(0, -3, 0), 10, maters[0], blank_tex);
+	mesh_create_from_file("objects/flat.obj", meshes[7], vec3(0, -3, 0), 10, maters[0], flat_tex, Flat_n_tex, Flat_s_tex);
 	//mesh_create_from_file("objects/flat.obj", meshes[7], vec3(0, -3, 0), 10, maters[2], 2);
 	
 	light_meshes.insert(1);
@@ -339,20 +354,20 @@ void init_scene()
 
 	if (USE_MASSIVE_MODELS)
 	{
-		mesh_create_from_file("objects/fw190.obj", meshes[8], vec3(7, 2, 2), 0.3, maters[0], fw190_tex);
-		mesh_create_from_file("objects/ship.obj", meshes[9], vec3(7, 2, 2), 0.5, maters[0], ship_tex);
-		mesh_create_from_file("objects/f22.obj", meshes[10], vec3(7, 2, 2), 0.5, maters[0], f22_tex);
-		mesh_create_from_file("objects/su35.obj", meshes[11], vec3(7, 2, 2), 0.2, maters[0], su35_tex);
-		mesh_create_from_file("objects/t50.obj", meshes[12], vec3(7, 2, 2), 0.2, maters[0], t50_tex);
+		mesh_create_from_file("objects/fw190.obj", meshes[8], vec3(7, 2, 2), 0.3, maters[0], fw190_tex, NO_TEXTURE, NO_TEXTURE);
+		mesh_create_from_file("objects/ship.obj", meshes[9], vec3(7, 2, 2), 0.5, maters[0], ship_tex, NO_TEXTURE, NO_TEXTURE);
+		mesh_create_from_file("objects/f22.obj", meshes[10], vec3(7, 2, 2), 0.5, maters[0], f22_tex, NO_TEXTURE, NO_TEXTURE);
+		mesh_create_from_file("objects/su35.obj", meshes[11], vec3(7, 2, 2), 0.2, maters[0], su35_tex, NO_TEXTURE, NO_TEXTURE);
+		mesh_create_from_file("objects/t50.obj", meshes[12], vec3(7, 2, 2), 0.2, maters[0], t50_tex, NO_TEXTURE, NO_TEXTURE);
 		meshes[8].rotate_around_y_central(p_data.position[0], 0, M_PI);
 		meshes[9].rotate_around_y_central(p_data.position[0], M_PI * 4 / 5, M_PI * 4 / 5);
 		meshes[10].rotate_around_y_central(p_data.position[0], M_PI * 8 / 5, M_PI * 8 / 5 + M_PI);
 		meshes[11].rotate_around_y_central(p_data.position[0], M_PI * 12 / 5, M_PI * 12 / 5 + M_PI);
 		meshes[12].rotate_around_y_central(p_data.position[0], M_PI * 16 / 5, M_PI * 16 / 5 + M_PI);
 
-		mesh_create_from_file("objects/is4.obj", meshes[13], vec3(-6, -3, 2), 0.3, maters[0], is4_tex);
-		mesh_create_from_file("objects/is7.obj", meshes[14], vec3(-6, -3, 2), 0.3, maters[0], is7_tex);
-		mesh_create_from_file("objects/is3.obj", meshes[15], vec3(-6, -3, 2), 0.3, maters[0], is3_tex);
+		mesh_create_from_file("objects/is4.obj", meshes[13], vec3(-6, -3, 2), 0.3, maters[0], is4_tex, NO_TEXTURE, NO_TEXTURE);
+		mesh_create_from_file("objects/is7.obj", meshes[14], vec3(-6, -3, 2), 0.3, maters[0], is7_tex, NO_TEXTURE, NO_TEXTURE);
+		mesh_create_from_file("objects/is3.obj", meshes[15], vec3(-6, -3, 2), 0.3, maters[0], is3_tex, NO_TEXTURE, NO_TEXTURE);
 		meshes[14].rotate_around_y_central(p_data.position[0], M_PI * 2 / 3, M_PI * 2 / 3);
 		meshes[15].rotate_around_y_central(p_data.position[0], M_PI * 4 / 3, M_PI * 4 / 3);
 	}
@@ -361,7 +376,7 @@ void init_scene()
 
 	for (int i = 0; i < targ_num; i++)
 	{
-		mesh_create_from_file("objects/yoba.obj", targets[i], vec3(0.0, 2.5, 1.0), 0.2, maters[0], Yyoba_tex);
+		mesh_create_from_file("objects/yoba.obj", targets[i], vec3(0.0, 2.5, 1.0), 0.2, maters[0], Yyoba_tex, Yyoba_n_tex, Yyoba_n_tex);
 		targets[i].rotate_around_y_central(p_data.position[0], M_PI * 2 * i / targ_num, M_PI * 2 * i / targ_num + 1.12 * M_PI);
 		targets[i].visible = false;
 	}
@@ -392,7 +407,7 @@ void init_lighting()
 		vec4(0.0f, 2.0f, 2.0f, 1.0f),
 		vec4(0.1f, 0.1f, 0.1f, 1.0f),
 		vec4(1.0f, 1.0f, 1.0f, 1.0f),
-		vec4(0.03f, 0.03f, 0.03f, 0.03f),
+		vec4(1.0f, 1.0f, 1.0f, 1.0f),
 		vec3(0.5f, 0.0f, 0.02f), 
 		window, shad_size);
 
@@ -400,7 +415,7 @@ void init_lighting()
 		vec4(-1.0f, 1.0f, 0.0f, 0.0f),
 		vec4(0.1f, 0.1f, 0.1f, 1.0f),
 		vec4(1.0f, 1.0f, 1.0f, 1.0f),
-		vec4(0.03f, 0.03f, 0.03f, 0.03f),
+		vec4(1.0f, 1.0f, 1.0f, 1.0f),
 		window, shad_size);
 	
 	s_data.add(
@@ -408,7 +423,7 @@ void init_lighting()
 		vec4(-1.0f, -1.0f, 0.0f, 1.0f),
 		vec4(0.1f, 0.1f, 0.1f, 1.0f),
 		vec4(1.0f, 1.0f, 1.0f, 1.0f),
-		vec4(0.03f, 0.03f, 0.03f, 0.03f),
+		vec4(1.0f, 1.0f, 1.0f, 1.0f),
 		vec3(0.09f, 0.0f, 0.015f), cosf(45.0 / 180.0 * M_PI * 2), 25.0f,
 		window, shad_size);
 
@@ -685,10 +700,12 @@ void set_vsync(bool vs)
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {	
 	CreateConsole();
+	setlocale(LC_ALL, "Russian");
 	load_screen_on(hInstance, nCmdShow);
 
 	int err = init();
-	cout << (unsigned char*)glGetString(GL_VENDOR) << endl << (unsigned char*)glGetString(GL_RENDERER) << endl;
+	cout << (unsigned char*)glGetString(GL_VENDOR) << 
+		endl << (unsigned char*)glGetString(GL_RENDERER) << endl;
 
 	if (err)
 	{

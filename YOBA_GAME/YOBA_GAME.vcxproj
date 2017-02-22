@@ -72,6 +72,7 @@
     <ProjectGuid>{17955FD1-0E8E-41E9-B3E8-578B7081EE81}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>YOBA_GAME</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0.10240.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">

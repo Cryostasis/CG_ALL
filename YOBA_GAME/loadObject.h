@@ -24,19 +24,14 @@ struct g_object
 	std::vector<GLfloat> texcoords;
 	std::vector<GLfloat> normals;
 	std::vector<GLuint>  indicies;
+	std::vector<GLfloat>  tangent;
+	std::vector<GLfloat>  bitangent;
 
 	std::vector<GLfloat> N_verts;
 	std::vector<GLuint>  N_indicies;
 
 	std::vector<GLfloat> P_verts;
 	std::vector<GLuint>  P_indicies;
-
-	std::vector<GLuint>  T_verts;
-	std::vector<GLuint>  T_indicies;
-
-	std::vector<GLuint>  B_verts;
-	std::vector<GLuint>  B_indicies;
-
 
 	std::string file;
 };

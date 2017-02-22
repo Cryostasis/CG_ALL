@@ -9,6 +9,10 @@
 #include "loadObject.h"
 #include "error_log.h"
 
+#include <assimp/Importer.hpp> 
+#include <assimp/scene.h>      
+#include <assimp/postprocess.h>
+
 using namespace std;
 
 int obj_count = 0;
@@ -106,6 +110,28 @@ int load_bin(g_object *obj, FILE *F)
 	obj->vert_num = obj->verts.size() / 3;
 	obj->ind_num = obj->indicies.size();
 	return LS_OK;
+}
+
+void calc_tangent(vec3 pos1, vec3 pos2, vec3 pos3, vec2 uv1, vec2 uv2, vec3 uv3,
+	vec3& tangent, vec3& bitangent)
+{
+	vec3 edge1 = pos2 - pos1;
+	vec3 edge2 = pos3 - pos1;
+	vec2 deltaUV1 = uv2 - uv1;
+	vec2 deltaUV2 = uv3 - uv1;
+
+
+	GLfloat f = 1.0f / (deltaUV1.x * deltaUV2.y - deltaUV2.x * deltaUV1.y);
+
+	tangent.x = f * (deltaUV2.y * edge1.x - deltaUV1.y * edge2.x);
+	tangent.y = f * (deltaUV2.y * edge1.y - deltaUV1.y * edge2.y);
+	tangent.z = f * (deltaUV2.y * edge1.z - deltaUV1.y * edge2.z);
+	tangent = normalize(tangent);
+
+	bitangent.x = f * (-deltaUV2.x * edge1.x + deltaUV1.x * edge2.x);
+	bitangent.y = f * (-deltaUV2.x * edge1.y + deltaUV1.x * edge2.y);
+	bitangent.z = f * (-deltaUV2.x * edge1.z + deltaUV1.x * edge2.z);
+	bitangent = normalize(bitangent);
 }
 
 void load_object(g_object *obj, char *file)
@@ -207,6 +233,44 @@ void load_object(g_object *obj, char *file)
 		obj->normals.push_back(ns[ind[i] * 3 + 1]);
 		obj->normals.push_back(ns[ind[i] * 3 + 2]);
 		i++;
+		/*
+		if (i % 9 == 0)
+		{
+			vec3 T, B;
+			calc_tangent(
+				vec3(
+					obj->verts[obj->verts.size() - 9],
+					obj->verts[obj->verts.size() - 8],
+					obj->verts[obj->verts.size() - 7]),
+				vec3(
+					obj->verts[obj->verts.size() - 6],
+					obj->verts[obj->verts.size() - 5],
+					obj->verts[obj->verts.size() - 4]),
+				vec3(
+					obj->verts[obj->verts.size() - 3],
+					obj->verts[obj->verts.size() - 2],
+					obj->verts[obj->verts.size() - 1]),
+				vec2(
+					obj->texcoords[obj->texcoords.size() - 6],
+					obj->texcoords[obj->texcoords.size() - 5]),
+				vec2(
+					obj->texcoords[obj->texcoords.size() - 4],
+					obj->texcoords[obj->texcoords.size() - 3]),
+				vec2(
+					obj->texcoords[obj->texcoords.size() - 2],
+					obj->texcoords[obj->texcoords.size() - 1]),
+				T, B);
+			for (int k = 0; k < 3; k++)
+			{
+				obj->tangent.push_back(T.x);
+				obj->tangent.push_back(T.y);
+				obj->tangent.push_back(T.z);
+
+				obj->bitangent.push_back(B.x);
+				obj->bitangent.push_back(B.y);
+				obj->bitangent.push_back(B.z);
+			}
+		}*/
 	}
 
 	obj->vert_num = obj->verts.size() / 3;
@@ -264,6 +328,21 @@ void load_object(g_object *obj, char *file)
 	}
 
 	fclose(F);
+
+	Assimp::Importer importer;
+	const aiScene* scene = importer.ReadFile(file,
+		aiProcess_CalcTangentSpace);
+
+	for (int i = 0; i < scene->mMeshes[0]->mNumVertices; i++)
+	{
+		obj->tangent.push_back(scene->mMeshes[0]->mTangents[i].x);
+		obj->tangent.push_back(scene->mMeshes[0]->mTangents[i].y);
+		obj->tangent.push_back(scene->mMeshes[0]->mTangents[i].z);
+		
+		obj->bitangent.push_back(scene->mMeshes[0]->mBitangents[i].x);
+		obj->bitangent.push_back(scene->mMeshes[0]->mBitangents[i].y);
+		obj->bitangent.push_back(scene->mMeshes[0]->mBitangents[i].z);
+	}
 
 	F = fopen(File, "wb");
 	save_bin(obj, F);
