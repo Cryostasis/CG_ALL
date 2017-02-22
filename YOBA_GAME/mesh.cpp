@@ -129,20 +129,28 @@ void mesh_t::render(GLuint program, camera_t &camera)
 		glBindTexture(GL_TEXTURE_2D, texture);
 		glUniform1i(material_locs.texture_loc, 0);
 
-		if (tex_n != NO_TEXTURE && tex_s != NO_TEXTURE)
+		if (tex_n != NO_TEXTURE)
 		{
 			glActiveTexture(GL_TEXTURE1);
 			glBindTexture(GL_TEXTURE_2D, tex_n);
 			glUniform1i(material_locs.tex_n_loc, 1);
 
-			glActiveTexture(GL_TEXTURE2);
-			glBindTexture(GL_TEXTURE_2D, tex_s);
-			glUniform1i(material_locs.tex_s_loc, 2);
-
 			glUniform1i(USE_NM_LOC, 1);
 		}
 		else
 			glUniform1i(USE_NM_LOC, 0);
+
+		if (tex_s != NO_TEXTURE)
+		{
+			glActiveTexture(GL_TEXTURE2);
+			glBindTexture(GL_TEXTURE_2D, tex_s);
+			glUniform1i(material_locs.tex_s_loc, 2);
+
+			glUniform1i(USE_PM_LOC, 1);
+		}
+		else
+			glUniform1i(USE_PM_LOC, 0);
+
 	}
 
 	glBindVertexArray(VAO);

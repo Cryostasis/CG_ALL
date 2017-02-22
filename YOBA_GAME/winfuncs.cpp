@@ -121,7 +121,7 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	return DefWindowProc(hwnd, uMsg, wParam, lParam);
 }
 
-void load_screen_on(HINSTANCE hInstance, int nCmdShow)
+void load_screen_on(HINSTANCE hInstance, int nCmdShow, HWND parent)
 {
 	hBitmap = (HBITMAP)LoadImage(NULL,
 		L"logo.bmp",
@@ -139,7 +139,7 @@ void load_screen_on(HINSTANCE hInstance, int nCmdShow)
 	RegisterClass(&wc);
 
 	hwnd = CreateWindowEx(
-		0, CLASS_NAME, L"Loading", WS_OVERLAPPEDWINDOW,
+		WS_EX_NOPARENTNOTIFY, CLASS_NAME, L"Loading", WS_OVERLAPPEDWINDOW,
 		270, 270, 910, 240, NULL, NULL, hInstance, NULL);
 	ShowWindow(hwnd, nCmdShow);
 
@@ -148,12 +148,12 @@ void load_screen_on(HINSTANCE hInstance, int nCmdShow)
 	DrawBitmap(hdc, 0, 0, hBitmap);
 	EndPaint(hwnd, &ps);
 
-	int i = 3;
 	return;
 }
 
 void load_screen_off()
 {
+	ShowWindow(hwnd, SW_HIDE);
 	CloseWindow(hwnd);
 }
 
@@ -165,6 +165,10 @@ bool CreateConsole()
 	FreeConsole();
 	if (AllocConsole())
 	{
+		//setlocale(0, "");
+		//system("chcp 1251");
+		SetConsoleCP(1251);
+		SetConsoleOutputCP(1251);
 		//int hCrt = _open_osfhandle((long)GetStdHandle(STD_OUTPUT_HANDLE), _O_TEXT);
 		freopen("CONOUT$", "w", stdout);
 		/**stdout = *(::_fdopen(hCrt, "w"));

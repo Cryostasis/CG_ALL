@@ -109,7 +109,9 @@ GLuint su35_tex;
 GLuint t50_tex;
 
 GLuint Yyoba_n_tex;
+GLuint Yyoba_s_tex;
 GLuint Sych_n_tex;
+GLuint Sych_s_tex;
 GLuint Flat_n_tex;
 GLuint Flat_s_tex;
 
@@ -141,7 +143,9 @@ void reg_texture()
 	t50_tex =	get_texture_from_tga("textures/t50.tga");
 
 	Yyoba_n_tex = get_texture_from_tga("textures/Yyoba_n.tga");
-	Sych_n_tex = get_texture_from_tga("textures/Sych_n.tga");
+	Yyoba_s_tex = get_texture_from_tga("textures/Yyoba_s.tga");
+	Sych_n_tex = get_texture_from_tga("textures/Sych_n2.tga");
+	Sych_s_tex = get_texture_from_tga("textures/Sych_s2.tga");
 	Flat_n_tex = get_texture_from_tga("textures/flat_n.tga");
 	Flat_s_tex = get_texture_from_tga("textures/flat_s.tga");
 }
@@ -339,9 +343,9 @@ void init_scene()
 
 	for (int i = 3; i < 6; i++)
 	{
-		mesh_create_sphere(meshes[i], vec3(1.0f, 1.5f, 2.0f), 0.2, maters[0], sych_tex, Sych_n_tex, Sych_n_tex);
+		mesh_create_sphere(meshes[i], vec3(1.0f, 1.5f, 2.0f), 0.2, maters[0], sych_tex, Sych_n_tex, Sych_s_tex);
 		meshes[i].rotate_around_y_central(p_data.position[0], M_PI * 2 * i / 3, M_PI * 2 * i / 3);
-		meshes[i].visible = false;
+		//meshes[i].visible = false;
 	}
 	mesh_create_from_file("objects/cone.obj", meshes[6], s_data.position[0], 0.2, maters[1], cone_tex, NO_TEXTURE, NO_TEXTURE);
 	meshes[6].rotate(0.0, 0.0, -M_PI / 4);
@@ -376,9 +380,9 @@ void init_scene()
 
 	for (int i = 0; i < targ_num; i++)
 	{
-		mesh_create_from_file("objects/yoba.obj", targets[i], vec3(0.0, 2.5, 1.0), 0.2, maters[0], Yyoba_tex, Yyoba_n_tex, Yyoba_n_tex);
+		mesh_create_from_file("objects/yoba.obj", targets[i], vec3(0.0, 2.5, 1.0), 0.2, maters[0], Yyoba_tex, Yyoba_n_tex, Yyoba_s_tex);
 		targets[i].rotate_around_y_central(p_data.position[0], M_PI * 2 * i / targ_num, M_PI * 2 * i / targ_num + 1.12 * M_PI);
-		targets[i].visible = false;
+		//targets[i].visible = false;
 	}
 
 	for (int i = 0; i < MAX_BULLETS; i++)
@@ -700,8 +704,7 @@ void set_vsync(bool vs)
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {	
 	CreateConsole();
-	setlocale(LC_ALL, "Russian");
-	load_screen_on(hInstance, nCmdShow);
+	load_screen_on(hInstance, nCmdShow, NULL);
 
 	int err = init();
 	cout << (unsigned char*)glGetString(GL_VENDOR) << 
