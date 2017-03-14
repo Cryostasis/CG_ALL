@@ -37,7 +37,7 @@ public:
 	int max_life;
 };
 
-void bullet_create(bullet_t &bullet, vec3 pos, vec3 spd, int mater, GLuint tex, GLfloat sz, int life);
+void bullet_create(bullet_t &bullet, vec3 pos, vec3 spd, int mater, GLuint tex, GLuint tex_n, GLuint tex_s, GLfloat sz, int life);
 
 int intercept_tr_seg(vec3 p1, vec3 p2, vec3 pa, vec3 pb, vec3 pc, vec3 *p);
 void init_physics(float gr_x, float gr_y, float gr_z);

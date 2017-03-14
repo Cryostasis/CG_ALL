@@ -153,7 +153,7 @@ void reg_texture()
 void scene_tact()
 {
 	meshes[0].rotate(0, diff_angle, 0);
-	//meshes[2].rotate(diff_angle, diff_angle, diff_angle);
+	meshes[2].rotate(diff_angle, diff_angle, diff_angle);
 	
 	for (int i = 0; i < MAX_BULLETS; i++)
 		if (bullets[i].visible)
@@ -387,7 +387,7 @@ void init_scene()
 
 	for (int i = 0; i < MAX_BULLETS; i++)
 	{
-		bullet_create(bullets[i], vec3(), vec3(), maters[0], Gyoba_tex, 0.05, 300);
+		bullet_create(bullets[i], vec3(), vec3(), maters[0], Gyoba_tex, Yyoba_n_tex, Yyoba_s_tex, 0.05, 300);
 		bullets[i].visible = false;
 	}
 }

@@ -51,7 +51,7 @@ void bullet_t::physics_reset()
 	visible = true;
 }
 
-void bullet_create(bullet_t &bullet, vec3 pos, vec3 spd, int mater, GLuint tex, GLfloat sz, int life)
+void bullet_create(bullet_t &bullet, vec3 pos, vec3 spd, int mater, GLuint tex, GLuint tex_n, GLuint tex_s, GLfloat sz, int life)
 {
 	static bool flag;
 	static int  index;
